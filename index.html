@@ -799,11 +799,15 @@
       <ul class="thumbs" id="receiptThumbs" aria-live="polite"></ul>
     </div>`;
 
+  const NET_SPEC = `
+    <p class="q" id="q_net_carrier">어느 통신사인가요?</p>
+    <div class="chips" role="radiogroup" aria-labelledby="q_net_carrier">${chips("radio", "carrier_net", ["KT", "SK브로드밴드", "LG유플러스", "케이블 방송사", "그 밖의 업체", "잘 모르겠음"])}</div>`;
+
   const ITEMS = [
     { key: "card", label: "카드단말기" },
     { key: "pos", label: "POS", spec: POS_SPEC },
     { key: "kiosk", label: "키오스크", spec: KIOSK_SPEC },
-    { key: "net", label: "인터넷" },
+    { key: "net", label: "인터넷", spec: NET_SPEC },
     { key: "cctv", label: "CCTV", spec: CCTV_SPEC },
     { key: "liquor", label: "주류업체와 거래하고 있어요", spec: LIQUOR_SPEC, fee: false, contract: false, into: "liquorRows" },
   ];
