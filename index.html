@@ -244,6 +244,30 @@
   }
   input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 3px solid var(--ink); outline-offset: 0; border-color: var(--ink); }
 
+  .vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .spec-etc { width: 100%; margin: 10px 0 14px; }
+  .chips + .spec-etc { margin-top: 10px; }
+  .item-more > .chips:has(+ .q), .item-more > .count { margin-bottom: 12px; }
+  .photo-tip { margin: 0 0 14px; padding: 14px; border-radius: 4px; background: var(--band); font-size: 15px; }
+  .photo-tip p { margin-bottom: 10px; }
+  .photo-tip .btn { min-height: 44px; font-size: 15px; }
+  .count { display: flex; align-items: center; gap: 8px; }
+  .count input { width: 88px; text-align: right; }
+  .count span { color: var(--muted); }
+
+  .multi { margin-top: 24px; }
+  .multi-title { font-family: var(--display); font-size: 22px; }
+  .multi-hint { font-size: 14px; color: var(--muted); }
+  .rows { border-top: 1px dashed var(--rule); margin-top: 8px; }
+  .row .item-main { gap: 10px; }
+  .row-name { display: flex; gap: 8px; flex: 1 1 200px; flex-wrap: wrap; }
+  .row-name select, .row-name input { flex: 1 1 140px; min-width: 0; }
+  .row .item-more { margin-left: 0; }
+  .remove { background: none; border: 0; color: var(--muted); font: 500 14px/1 var(--body); padding: 10px 4px; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+  .remove:hover { color: var(--ink); }
+  .add { margin-top: 12px; width: 100%; min-height: 46px; border: 1.5px dashed var(--muted); border-radius: 4px; background: transparent; color: var(--ink); font: 600 16px/1 var(--body); cursor: pointer; }
+  .add:hover { border-color: var(--ink); background: var(--paper); }
+
   .sum { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 16px 0; border-top: 2px solid var(--ink); margin-top: 8px; font-weight: 700; font-variant-numeric: tabular-nums; }
   .sum output { font-size: 22px; }
   .sum-hint { font-size: 14px; color: var(--muted); font-weight: 400; margin-top: -8px; }
@@ -344,7 +368,8 @@
         <li><span>POS</span><span class="blank">월 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;원</span></li>
         <li><span>인터넷</span><span class="blank">월 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;원</span></li>
         <li><span>CCTV</span><span class="blank">월 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;원</span></li>
-        <li><span>렌탈 (정수기 등)</span><span class="blank">월 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;원</span></li>
+        <li><span>렌탈 (정수기·공기청정기 등)</span><span class="blank">월 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;원</span></li>
+        <li><span>기타 고정비</span><span class="blank">월 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;원</span></li>
       </ul>
       <div class="slip-total"><span>합계</span><span>얼마나 내고 계세요?</span></div>
       <p class="slip-note">고지서 사진만 보내주시면 항목별로 확인해 드립니다.</p>
@@ -555,10 +580,10 @@
       <h2 id="check-title">내 매장 고정비 체크</h2>
       <p class="lede">쓰고 있는 항목에 체크하고 월 요금을 적어 주세요. 정확하지 않아도 괜찮습니다. 확인 후 연락드립니다.</p>
       <div class="alt">
-        <p>적기 번거로우시면 고지서 사진을 카카오톡으로 보내셔도 됩니다.</p>
+        <p>POS 사양을 모르시겠다면 사용 중인 POS를 사진으로 찍어 카카오톡으로 보내주세요. 모니터, 프린터처럼 연결된 장비가 함께 보이게 찍어 주시면 됩니다.</p>
         <a class="btn btn--kakao todo" href="#" data-kakao>
           <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 3C6.5 3 2 6.6 2 11c0 2.8 1.9 5.3 4.7 6.7l-1 3.6c-.1.3.3.6.6.4l4.2-2.8c.5.1 1 .1 1.5.1 5.5 0 10-3.6 10-8S17.5 3 12 3z"/></svg>
-          고지서 사진 보내기
+          POS 사진 보내기
         </a>
       </div>
     </div>
@@ -573,7 +598,21 @@
         </div>
 
         <fieldset id="items">
-          <legend class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">사용 중인 항목과 월 요금</legend>
+          <legend class="vh">사용 중인 항목과 월 요금</legend>
+        </fieldset>
+
+        <fieldset class="multi">
+          <legend class="multi-title">렌탈 제품</legend>
+          <p class="multi-hint">제품마다 약정이 다를 수 있어요. 하나씩 따로 적어 주세요.</p>
+          <div class="rows" id="rentalRows"></div>
+          <button type="button" class="add" id="addRental">+ 렌탈 제품 추가</button>
+        </fieldset>
+
+        <fieldset class="multi">
+          <legend class="multi-title">기타 고정비</legend>
+          <p class="multi-hint">위에 없는 것 중 매달 고정으로 나가는 비용을 직접 적어 주세요.</p>
+          <div class="rows" id="otherRows"></div>
+          <button type="button" class="add" id="addOther">+ 기타 비용 추가</button>
         </fieldset>
 
         <div class="sum"><span>입력하신 월 요금 합계</span><output id="sum" aria-live="polite">0원</output></div>
@@ -611,9 +650,12 @@
 
       <div class="done" tabindex="-1" id="done">
         <h3>접수됐습니다</h3>
-        <p>보내주신 내용을 확인한 뒤 남겨주신 번호로 연락드립니다. 고지서 사진이 있으면 카카오톡으로 함께 보내주세요. 더 정확하게 확인할 수 있습니다.</p>
-        <div class="hero-actions">
-          <a class="btn btn--kakao todo" href="#" data-kakao>고지서 사진 보내기</a>
+        <p>보내주신 내용을 확인한 뒤 남겨주신 번호로 연락드립니다.</p>
+        <div id="donePos" hidden>
+          <p>POS 사양을 모르겠다고 하셨는데, 사용 중인 POS 사진을 카카오톡으로 보내주시면 더 정확하게 확인할 수 있습니다.</p>
+          <div class="hero-actions">
+            <a class="btn btn--kakao todo" href="#" data-kakao>POS 사진 보내기</a>
+          </div>
         </div>
       </div>
     </form>
@@ -652,70 +694,150 @@
   const KAKAO_URL = "#";
   document.querySelectorAll("[data-kakao]").forEach(a => { a.href = KAKAO_URL; });
 
+  const KAKAO_ICON = '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 3C6.5 3 2 6.6 2 11c0 2.8 1.9 5.3 4.7 6.7l-1 3.6c-.1.3.3.6.6.4l4.2-2.8c.5.1 1 .1 1.5.1 5.5 0 10-3.6 10-8S17.5 3 12 3z"/></svg>';
+  const chips = (type, name, values) => values.map(v =>
+    `<label class="chip"><input type="${type}" name="${name}" value="${v}"><span>${v}</span></label>`).join("");
+
+  const CONTRACT_TIPS = {
+    "남아 있음": "위약금과 바꿨을 때 줄어드는 비용을 비교해 안내해 드립니다. 위약금이 더 크면 만료 시점에 맞춰 계획을 세웁니다.",
+    "끝남": "바로 비교해 볼 수 있는 항목입니다.",
+    "잘 모르겠음": "괜찮습니다. 통신사 고객센터·앱이나 해당 업체에서 확인하는 방법을 알려드리고, 원하시면 함께 확인해 드립니다.",
+  };
+  const contractHTML = id => `
+    <p class="q" id="q1_${id}">약정이 남아 있나요?</p>
+    <div class="chips" role="radiogroup" aria-labelledby="q1_${id}">${chips("radio", `contract_${id}`, ["남아 있음", "끝남", "잘 모르겠음"])}</div>
+    <div class="remain" hidden>
+      <p class="q" id="q2_${id}">얼마나 남았나요?</p>
+      <div class="chips" role="radiogroup" aria-labelledby="q2_${id}">${chips("radio", `remain_${id}`, ["6개월 이내", "6개월~1년", "1년 이상"])}</div>
+    </div>
+    <p class="contract-tip"></p>`;
+  function wireContract(el, id) {
+    const remain = el.querySelector(".remain");
+    const tip = el.querySelector(".contract-tip");
+    el.querySelectorAll(`[name="contract_${id}"]`).forEach(r => r.addEventListener("change", () => {
+      remain.hidden = r.value !== "남아 있음";
+      tip.textContent = CONTRACT_TIPS[r.value];
+      tip.classList.add("show");
+    }));
+  }
+  function wireFee(el, fee, onInput) {
+    fee.addEventListener("input", () => {
+      const digits = fee.value.replace(/[^0-9]/g, "");
+      fee.value = digits ? Number(digits).toLocaleString("ko-KR") : "";
+      onInput(!!digits);
+      updateSum();
+    });
+  }
+  const feeHTML = (name, label) => `
+    <div class="fee">
+      <input type="text" inputmode="numeric" name="${name}" data-fee aria-label="${label} 월 요금" placeholder="월 요금">
+      <span>원</span>
+    </div>`;
+
+  // 고정 항목: 카드단말기, POS, 인터넷, CCTV
+  const POS_SPEC = `
+    <p class="q">어떤 구성인가요? (해당하는 것 모두)</p>
+    <div class="chips">${chips("checkbox", "spec_pos", ["기본 세트 (모니터·금전함·멀티패드·프린터)", "듀얼 모니터", "벽면 모니터", "주방 프린터", "키오스크", "테이블오더", "잘 모르겠음"])}</div>
+    <input class="spec-etc" type="text" name="spec_pos_etc" aria-label="그 밖에 연결된 POS 장비" placeholder="그 밖에 연결된 장비 (예: 바코드 스캐너)">
+    <div class="photo-tip" hidden>
+      <p>괜찮습니다. 사용 중인 POS를 사진으로 찍어 카카오톡으로 보내주세요. 연결된 장비가 함께 보이게 찍어 주시면 됩니다.</p>
+      <a class="btn btn--kakao todo" href="${KAKAO_URL}">${KAKAO_ICON}POS 사진 보내기</a>
+    </div>`;
+  const CCTV_SPEC = `
+    <p class="q" id="q_cctv_vendor">어디 제품인가요?</p>
+    <div class="chips" role="radiogroup" aria-labelledby="q_cctv_vendor">${chips("radio", "vendor_cctv", ["통신사 상품 (KT·SK·LG 등)", "사설 업체", "잘 모르겠음"])}</div>
+    <p class="q"><label for="cctv_count">몇 대인가요?</label></p>
+    <div class="count"><input type="number" id="cctv_count" name="count_cctv" min="1" max="99" inputmode="numeric" placeholder="0"><span>대</span></div>`;
+
   const ITEMS = [
     { key: "card", label: "카드단말기" },
-    { key: "pos", label: "POS" },
+    { key: "pos", label: "POS", spec: POS_SPEC },
     { key: "net", label: "인터넷" },
-    { key: "cctv", label: "CCTV" },
-    { key: "rental", label: "렌탈 (정수기 등)" },
+    { key: "cctv", label: "CCTV", spec: CCTV_SPEC },
   ];
 
   const itemsEl = document.getElementById("items");
-  ITEMS.forEach(({ key, label }) => {
+  ITEMS.forEach(({ key, label, spec = "" }) => {
     const el = document.createElement("div");
     el.className = "item";
     el.innerHTML = `
       <div class="item-main">
         <label class="use"><input type="checkbox" name="use_${key}">${label}</label>
-        <div class="fee">
-          <input type="text" inputmode="numeric" name="fee_${key}" aria-label="${label} 월 요금" placeholder="월 요금">
-          <span>원</span>
-        </div>
+        ${feeHTML(`fee_${key}`, label)}
       </div>
-      <div class="item-more">
-        <p class="q" id="q1_${key}">약정이 남아 있나요?</p>
-        <div class="chips" role="radiogroup" aria-labelledby="q1_${key}">
-          ${["남아 있음", "끝남", "잘 모르겠음"].map(v => `<label class="chip"><input type="radio" name="contract_${key}" value="${v}"><span>${v}</span></label>`).join("")}
-        </div>
-        <div class="remain" hidden>
-          <p class="q" id="q2_${key}">얼마나 남았나요?</p>
-          <div class="chips" role="radiogroup" aria-labelledby="q2_${key}">
-            ${["6개월 이내", "6개월~1년", "1년 이상"].map(v => `<label class="chip"><input type="radio" name="remain_${key}" value="${v}"><span>${v}</span></label>`).join("")}
-          </div>
-        </div>
-        <p class="contract-tip"></p>
-      </div>`;
+      <div class="item-more">${spec}${contractHTML(key)}</div>`;
     itemsEl.appendChild(el);
 
     const use = el.querySelector(`[name=use_${key}]`);
-    const fee = el.querySelector(`[name=fee_${key}]`);
-    const remain = el.querySelector(".remain");
-    const tip = el.querySelector(".contract-tip");
-
     use.addEventListener("change", () => { el.classList.toggle("on", use.checked); updateSum(); });
-    fee.addEventListener("input", () => {
-      const digits = fee.value.replace(/[^0-9]/g, "");
-      fee.value = digits ? Number(digits).toLocaleString("ko-KR") : "";
-      if (digits && !use.checked) { use.checked = true; el.classList.add("on"); }
-      updateSum();
+    wireFee(el, el.querySelector("[data-fee]"), has => {
+      if (has && !use.checked) { use.checked = true; el.classList.add("on"); }
     });
-    el.querySelectorAll(`[name=contract_${key}]`).forEach(r => r.addEventListener("change", () => {
-      remain.hidden = r.value !== "남아 있음";
-      tip.textContent = {
-        "남아 있음": "위약금과 바꿨을 때 줄어드는 비용을 비교해 안내해 드립니다. 위약금이 더 크면 만료 시점에 맞춰 계획을 세웁니다.",
-        "끝남": "바로 비교해 볼 수 있는 항목입니다.",
-        "잘 모르겠음": "괜찮습니다. 통신사 고객센터·앱이나 단말기 업체에서 확인하는 방법을 알려드리고, 원하시면 함께 확인해 드립니다.",
-      }[r.value];
-      tip.classList.add("show");
-    }));
+    wireContract(el, key);
   });
+
+  // POS 사양을 모르면 사진 안내
+  const posUnknown = document.querySelector('[name=spec_pos][value="잘 모르겠음"]');
+  posUnknown.addEventListener("change", () => {
+    document.querySelector(".photo-tip").hidden = !posUnknown.checked;
+  });
+
+  // 추가할 수 있는 행: 렌탈 제품, 기타 고정비
+  let rowSeq = 0;
+  const RENTAL_TYPES = ["정수기", "공기청정기", "서빙로봇", "커피머신", "제빙기", "직접 입력"];
+  function addRow(container, kind) {
+    const id = `${kind}${++rowSeq}`;
+    const el = document.createElement("div");
+    el.className = "item row";
+    const nameField = kind === "rental"
+      ? `<select name="type_${id}" aria-label="렌탈 제품">
+           <option value="">제품 선택</option>${RENTAL_TYPES.map(t => `<option>${t}</option>`).join("")}
+         </select>
+         <input type="text" name="name_${id}" class="custom" aria-label="렌탈 제품 이름" placeholder="제품 이름" hidden>`
+      : `<input type="text" name="name_${id}" aria-label="기타 비용 항목" placeholder="항목 (예: 보안 서비스)">`;
+    el.innerHTML = `
+      <div class="item-main">
+        <div class="row-name">${nameField}</div>
+        ${feeHTML(`fee_${id}`, kind === "rental" ? "렌탈 제품" : "기타 비용")}
+        <button type="button" class="remove" aria-label="이 줄 삭제">삭제</button>
+      </div>
+      <div class="item-more">${contractHTML(id)}</div>`;
+    container.appendChild(el);
+
+    const named = el.querySelector(".row-name select, .row-name input:not(.custom)");
+    const fee = el.querySelector("[data-fee]");
+    const refresh = () => el.classList.toggle("on", !!named.value.trim() || !!fee.value);
+    named.addEventListener(named.tagName === "SELECT" ? "change" : "input", () => {
+      if (kind === "rental") {
+        const custom = el.querySelector(".custom");
+        custom.hidden = named.value !== "직접 입력";
+        if (!custom.hidden) custom.focus();
+      }
+      refresh(); updateSum();
+    });
+    wireFee(el, fee, refresh);
+    wireContract(el, id);
+    el.querySelector(".remove").addEventListener("click", () => {
+      const next = el.nextElementSibling || el.previousElementSibling;
+      el.remove();
+      if (!container.children.length) addRow(container, kind);
+      updateSum();
+      (next ? next.querySelector("select, input") : container.parentElement.querySelector(".add")).focus();
+    });
+    return el;
+  }
+  const rentalRows = document.getElementById("rentalRows");
+  const otherRows = document.getElementById("otherRows");
+  addRow(rentalRows, "rental");
+  addRow(otherRows, "other");
+  document.getElementById("addRental").addEventListener("click", () => addRow(rentalRows, "rental").querySelector("select").focus());
+  document.getElementById("addOther").addEventListener("click", () => addRow(otherRows, "other").querySelector("input").focus());
 
   const sumEl = document.getElementById("sum");
   function updateSum() {
     let total = 0;
-    ITEMS.forEach(({ key }) => {
-      if (!document.querySelector(`[name=use_${key}]`).checked) return;
-      total += Number(document.querySelector(`[name=fee_${key}]`).value.replace(/[^0-9]/g, "")) || 0;
+    document.querySelectorAll(".item.on [data-fee]").forEach(f => {
+      total += Number(f.value.replace(/[^0-9]/g, "")) || 0;
     });
     sumEl.textContent = total.toLocaleString("ko-KR") + "원";
   }
@@ -735,6 +857,7 @@
     if (!document.getElementById("f-consent").checked) { err.textContent = "개인정보 수집·이용에 동의해 주셔야 접수할 수 있습니다."; document.getElementById("f-consent").focus(); return; }
     err.textContent = "";
     // TODO: 아임웹 폼 또는 접수 주소로 전송 (new FormData(form))
+    document.getElementById("donePos").hidden = !posUnknown.checked;
     form.classList.add("sent");
     document.getElementById("done").focus();
   });
