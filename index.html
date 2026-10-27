@@ -1,0 +1,741 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>티디코리아 | 매장 고정비 무료 확인</title>
+<meta name="description" content="카드단말기·POS·인터넷·CCTV·렌탈, 매장 상황에 맞춰 조합을 다시 설계합니다. 정부지원금·정책자금도 무료로 함께 확인해 드립니다.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+<!--
+  초안 메모
+  - 빨간 점선(.todo)으로 표시한 곳은 실제 정보로 바꿔야 하는 자리입니다 (전화번호, 카카오톡 채널 주소, 사업자정보).
+  - 고정비 체크 폼은 화면 동작만 있고 아직 어디로도 전송하지 않습니다. 아임웹 폼이나 접수 주소에 연결해야 합니다.
+-->
+<style>
+  :root {
+    --paper: #F6F7F4;
+    --sheet: #FFFFFF;
+    --band: #E6ECE8;
+    --ink: #13293A;
+    --muted: #5A6A70;
+    --rule: #C7D0CC;
+    --seal: #C2372E;
+    --kakao: #FEE500;
+    --kakao-ink: #191600;
+    --display: "Do Hyeon", "IBM Plex Sans KR", sans-serif;
+    --body: "IBM Plex Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    --gutter: 16px;
+    --max: 1120px;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: 17px;
+    line-height: 1.7;
+    word-break: keep-all;
+    -webkit-font-smoothing: antialiased;
+  }
+  img { max-width: 100%; display: block; }
+  a { color: inherit; }
+  :focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; border-radius: 2px; }
+
+  .wrap { max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter); }
+  @media (min-width: 720px) { :root { --gutter: 32px; } }
+
+  h1, h2, h3 { font-family: var(--display); font-weight: 400; line-height: 1.25; margin: 0; letter-spacing: -0.01em; }
+  h2 { font-size: clamp(30px, 5vw, 44px); }
+  h3 { font-size: 24px; }
+  p { margin: 0; }
+  .lede { color: var(--muted); max-width: 34em; margin-top: 12px; }
+
+  .todo { outline: 2px dashed var(--seal); outline-offset: 2px; }
+
+  /* Buttons */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    min-height: 52px; padding: 0 22px;
+    border: 2px solid var(--ink); border-radius: 6px;
+    font: 600 17px/1 var(--body); text-decoration: none; cursor: pointer;
+    background: var(--sheet); color: var(--ink);
+  }
+  .btn--ink { background: var(--ink); color: var(--sheet); }
+  .btn--kakao { background: var(--kakao); color: var(--kakao-ink); border-color: var(--kakao); }
+  .btn svg { width: 20px; height: 20px; flex: none; }
+
+  /* Header */
+  .top { border-bottom: 1px solid var(--rule); background: var(--paper); }
+  .top .wrap { display: flex; align-items: center; justify-content: space-between; min-height: 64px; gap: 16px; }
+  .logo { font-family: var(--display); font-size: 26px; text-decoration: none; letter-spacing: -0.02em; }
+  .logo small { font-family: var(--body); font-size: 13px; color: var(--muted); margin-left: 8px; letter-spacing: 0; }
+  .top nav { display: none; gap: 24px; font-size: 15px; }
+  .top nav a { text-decoration: none; color: var(--muted); }
+  .top nav a:hover { color: var(--ink); }
+  .top-call { font-weight: 600; font-size: 15px; text-decoration: none; white-space: nowrap; }
+  @media (max-width: 479px) { .logo small { display: none; } }
+  @media (min-width: 900px) { .top nav { display: flex; } }
+
+  /* Hero */
+  .hero { padding: 48px 0 64px; overflow-x: clip; }
+  .hero .wrap { display: grid; gap: 48px; align-items: center; }
+  @media (min-width: 900px) { .hero .wrap { grid-template-columns: 1.15fr 0.85fr; } .hero { padding: 80px 0 96px; } }
+  .hero-intro { font-weight: 600; color: var(--muted); font-size: 17px; }
+  .worries { list-style: none; margin: 16px 0 0; padding: 0; counter-reset: w; }
+  .worries li {
+    font-family: var(--display);
+    font-size: clamp(30px, 5.4vw, 50px);
+    line-height: 1.22;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .worries li:first-child { border-top: 1px solid var(--rule); }
+  .hero-close { margin-top: 24px; font-size: 19px; max-width: 30em; }
+  .hero-close strong { font-weight: 700; }
+  .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+
+  /* The bill slip */
+  .slip {
+    position: relative;
+    background: var(--sheet);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: 28px 24px 24px;
+    box-shadow: 0 1px 0 var(--rule), 0 18px 40px -24px rgba(19, 41, 58, .35);
+    font-variant-numeric: tabular-nums;
+  }
+  .slip::before, .slip::after {
+    content: ""; position: absolute; left: 0; right: 0; height: 10px;
+    background: radial-gradient(circle at 6px 0, var(--paper) 5px, transparent 5.5px) 0 0 / 12px 10px repeat-x;
+  }
+  .slip::before { top: -1px; }
+  .slip::after { bottom: -1px; transform: rotate(180deg); }
+  .slip-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding-bottom: 12px; border-bottom: 2px solid var(--ink); }
+  .slip-title { font-family: var(--display); font-size: 24px; }
+  .slip-meta { font-size: 13px; color: var(--muted); }
+  .slip-rows { list-style: none; margin: 0; padding: 0; }
+  .slip-rows li { display: flex; justify-content: space-between; gap: 12px; padding: 12px 0; border-bottom: 1px dashed var(--rule); }
+  .slip-rows .blank { color: var(--muted); min-width: 7.5em; text-align: right; border-bottom: 1px solid var(--ink); line-height: 1.3; }
+  .slip-total { display: flex; justify-content: space-between; padding-top: 14px; font-weight: 700; }
+  .slip-note { margin-top: 18px; font-size: 14px; color: var(--muted); max-width: 22em; }
+
+  .stamp {
+    position: absolute; right: 18px; bottom: 54px;
+    width: 104px; height: 104px; border-radius: 50%;
+    border: 3px solid var(--seal); color: var(--seal);
+    display: grid; place-items: center; text-align: center;
+    font-family: var(--display); font-size: 22px; line-height: 1.05;
+    transform: rotate(-12deg);
+    background: rgba(255,255,255,.6);
+    box-shadow: inset 0 0 0 4px var(--sheet), inset 0 0 0 5px var(--seal);
+    pointer-events: none;
+  }
+  .stamp--corner { right: -14px; bottom: -34px; }
+
+  /* Sections */
+  section { padding: 72px 0; }
+  @media (min-width: 900px) { section { padding: 104px 0; } }
+  .band { background: var(--band); }
+  .ink-band { background: var(--ink); color: var(--paper); }
+  .ink-band .lede { color: #B8C6CB; }
+  .sec-head { margin-bottom: 40px; }
+
+  /* Concerns */
+  .concerns { display: grid; gap: 0; border-top: 2px solid var(--ink); }
+  @media (min-width: 720px) { .concerns { grid-template-columns: 1fr 1fr; } }
+  .concern { padding: 24px 0; border-bottom: 1px solid var(--rule); }
+  @media (min-width: 720px) { .concern:nth-child(odd) { padding-right: 32px; border-right: 1px solid var(--rule); } .concern:nth-child(even) { padding-left: 32px; } }
+  .concern q { display: block; font-family: var(--display); font-size: 26px; line-height: 1.3; quotes: "“" "”"; }
+  .concern p { color: var(--muted); margin-top: 8px; }
+
+  /* Services */
+  .service { display: grid; gap: 12px 48px; padding: 32px 0; border-top: 1px solid var(--rule); }
+  .service:last-child { border-bottom: 1px solid var(--rule); }
+  @media (min-width: 900px) { .service { grid-template-columns: 340px 1fr; } }
+  .service h3 { font-size: 30px; }
+  .service .what { color: var(--muted); margin-top: 6px; }
+  .service ul { margin: 0; padding-left: 1.1em; }
+  .service li + li { margin-top: 6px; }
+  .service .fine { margin-top: 14px; font-size: 15px; color: var(--muted); }
+
+  /* Opening setup */
+  .setup { display: grid; gap: 40px; }
+  @media (min-width: 900px) { .setup { grid-template-columns: 1fr 1fr; align-items: start; } }
+  .checklist { list-style: none; margin: 0; padding: 0; border-top: 1px solid #3A5262; }
+  .checklist li { display: grid; grid-template-columns: 28px 1fr; gap: 12px; padding: 14px 0; border-bottom: 1px solid #3A5262; }
+  .checklist .box { width: 22px; height: 22px; border: 2px solid var(--paper); border-radius: 3px; margin-top: 4px; }
+  .checklist b { font-weight: 600; }
+  .checklist span { display: block; color: #B8C6CB; font-size: 15px; }
+
+  /* Steps */
+  .steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; counter-reset: step; }
+  @media (min-width: 900px) { .steps { grid-template-columns: repeat(4, 1fr); } }
+  .steps li { counter-increment: step; padding: 24px 0; border-top: 2px solid var(--ink); }
+  @media (min-width: 900px) { .steps li { padding: 24px 24px 0 0; } }
+  .steps li::before { content: counter(step); display: block; font-family: var(--display); font-size: 48px; line-height: 1; margin-bottom: 12px; }
+  .steps h3 { font-size: 24px; }
+  .steps p { color: var(--muted); margin-top: 6px; font-size: 16px; }
+
+  /* Why */
+  .why { display: grid; gap: 32px 48px; }
+  @media (min-width: 900px) { .why { grid-template-columns: repeat(2, 1fr); } }
+  .why h3 { font-size: 26px; }
+  .why p { color: var(--muted); margin-top: 8px; }
+  .alert-offer { margin-top: 48px; padding: 28px; border: 2px solid var(--ink); border-radius: 6px; background: var(--sheet); display: grid; gap: 16px; }
+  @media (min-width: 900px) { .alert-offer { grid-template-columns: 1fr auto; align-items: center; } }
+  .alert-offer strong { font-family: var(--display); font-weight: 400; font-size: 28px; display: block; line-height: 1.3; }
+  .alert-offer p { color: var(--muted); margin-top: 4px; }
+  .people { display: grid; gap: 16px; margin-top: 48px; }
+  @media (min-width: 720px) { .people { grid-template-columns: 1fr 1fr; } }
+  .photo { aspect-ratio: 4 / 3; background: var(--band); border-radius: 4px; display: grid; place-items: center; color: var(--muted); font-size: 15px; text-align: center; padding: 16px; }
+
+  /* FAQ */
+  .faq { border-top: 2px solid var(--ink); max-width: 820px; }
+  .faq details { border-bottom: 1px solid var(--rule); }
+  .faq summary { list-style: none; cursor: pointer; padding: 20px 40px 20px 0; position: relative; font-weight: 600; font-size: 18px; }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary::after { content: "+"; position: absolute; right: 4px; top: 14px; font-family: var(--display); font-size: 30px; line-height: 1; }
+  .faq details[open] summary::after { content: "−"; }
+  .faq .a { padding: 0 0 22px; color: var(--muted); max-width: 40em; }
+
+  /* Check form */
+  .check { display: grid; gap: 40px; }
+  @media (min-width: 960px) { .check { grid-template-columns: 0.8fr 1.2fr; align-items: start; } .check-aside { position: sticky; top: 24px; } }
+  .check-aside .alt { margin-top: 28px; padding-top: 24px; border-top: 1px solid var(--rule); }
+  .check-aside .alt p { color: var(--muted); margin-bottom: 14px; }
+
+  form.slip { padding: 32px 20px 24px; }
+  @media (min-width: 720px) { form.slip { padding: 36px 32px 28px; } }
+  fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
+  legend { padding: 0; }
+  .group-title { font-family: var(--display); font-size: 22px; margin: 28px 0 4px; }
+  .group-hint { font-size: 14px; color: var(--muted); }
+
+  .item { border-bottom: 1px dashed var(--rule); padding: 14px 0; }
+  .item-main { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .item-main label.use { display: flex; align-items: center; gap: 10px; font-weight: 600; flex: 1 1 140px; cursor: pointer; }
+  .item-main input[type=checkbox] { width: 22px; height: 22px; accent-color: var(--ink); }
+  .fee { display: flex; align-items: center; gap: 6px; flex: 0 1 180px; margin-left: auto; }
+  .fee input { width: 100%; text-align: right; }
+  .fee span { color: var(--muted); font-size: 15px; }
+  .item-more { display: none; margin: 12px 0 0 32px; }
+  .item.on .item-more { display: block; }
+  .item:not(.on) .fee input { background: transparent; }
+
+  .q { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chips + .q { margin-top: 12px; }
+  .chip { position: relative; }
+  .chip input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+  .chip span { display: inline-block; padding: 6px 14px; border: 1px solid var(--rule); border-radius: 999px; font-size: 15px; background: var(--sheet); }
+  .chip input:checked + span { background: var(--ink); color: var(--sheet); border-color: var(--ink); }
+  .chip input:focus-visible + span { outline: 3px solid var(--ink); outline-offset: 2px; }
+  .contract-tip { display: none; margin-top: 10px; font-size: 14px; color: var(--muted); }
+  .contract-tip.show { display: block; }
+
+  input[type=text], input[type=tel], input[type=number], select, textarea {
+    font: 400 17px/1.4 var(--body); color: var(--ink);
+    border: 1px solid var(--rule); border-radius: 4px; padding: 10px 12px; background: var(--sheet); min-height: 46px;
+  }
+  input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 3px solid var(--ink); outline-offset: 0; border-color: var(--ink); }
+
+  .sum { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 16px 0; border-top: 2px solid var(--ink); margin-top: 8px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .sum output { font-size: 22px; }
+  .sum-hint { font-size: 14px; color: var(--muted); font-weight: 400; margin-top: -8px; }
+
+  .extras { display: grid; gap: 10px; margin-top: 8px; }
+  .extras label { display: flex; gap: 10px; align-items: flex-start; cursor: pointer; }
+  .extras input { width: 20px; height: 20px; margin-top: 4px; accent-color: var(--ink); flex: none; }
+
+  .fields { display: grid; gap: 14px; margin-top: 12px; }
+  @media (min-width: 720px) { .fields { grid-template-columns: 1fr 1fr; } .fields .full { grid-column: 1 / -1; } }
+  .field label { display: block; font-size: 15px; font-weight: 600; margin-bottom: 6px; }
+  .field input, .field select, .field textarea { width: 100%; }
+  .req { color: var(--seal); }
+  .consent { margin-top: 18px; font-size: 15px; display: flex; gap: 10px; align-items: flex-start; }
+  .consent input { width: 20px; height: 20px; margin-top: 3px; accent-color: var(--ink); flex: none; }
+  .error { color: var(--seal); font-size: 15px; margin-top: 12px; min-height: 1.5em; }
+  .submit { width: 100%; margin-top: 8px; }
+
+  .done { display: none; padding: 104px 0 4px; }
+  form.sent .form-body { display: none; }
+  form.sent .done { display: block; }
+  .done h3 { font-size: 30px; }
+  .done p { color: var(--muted); margin-top: 8px; max-width: 30em; }
+  form .stamp { display: none; top: 20px; bottom: auto; right: 20px; }
+  form.sent .stamp { display: grid; animation: stamp .45s cubic-bezier(.2, 1.6, .4, 1) both; }
+  @keyframes stamp {
+    0% { opacity: 0; transform: rotate(-12deg) scale(1.8); }
+    100% { opacity: 1; transform: rotate(-12deg) scale(1); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    form.sent .stamp { animation: none; }
+  }
+
+  /* Footer */
+  footer { background: var(--ink); color: #B8C6CB; padding: 48px 0 120px; font-size: 14px; line-height: 1.8; }
+  @media (min-width: 900px) { footer { padding-bottom: 48px; } }
+  footer .logo { color: var(--paper); display: inline-block; margin-bottom: 12px; }
+  footer dl { display: grid; grid-template-columns: max-content 1fr; gap: 2px 16px; margin: 0; }
+  footer dt { color: #8FA2A9; }
+  footer dd { margin: 0; }
+  footer .links { margin-top: 20px; display: flex; gap: 20px; flex-wrap: wrap; }
+  footer .links a { color: var(--paper); font-weight: 600; }
+  footer .legal { margin-top: 20px; color: #8FA2A9; max-width: 48em; }
+
+  /* Mobile action bar */
+  .bar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 10; display: grid; grid-template-columns: 1fr 1.4fr; gap: 8px; padding: 10px var(--gutter) calc(10px + env(safe-area-inset-bottom)); background: var(--paper); border-top: 1px solid var(--rule); }
+  .bar .btn { min-height: 48px; padding: 0 12px; }
+  @media (min-width: 900px) { .bar { display: none; } }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="#">티디코리아<small>매장 고정비·지원금 확인</small></a>
+    <nav aria-label="주요 메뉴">
+      <a href="#services">서비스</a>
+      <a href="#opening">개업 준비</a>
+      <a href="#process">진행 과정</a>
+      <a href="#faq">자주 묻는 질문</a>
+      <a href="#check">무료 점검</a>
+    </nav>
+    <a class="top-call todo" href="tel:01000000000">010-0000-0000</a>
+  </div>
+</header>
+
+<main>
+
+<!-- 1. 메인 -->
+<section class="hero" aria-labelledby="hero-title">
+  <div class="wrap">
+    <div>
+      <p class="hero-intro" id="hero-title">장사하면서 한 번쯤 해보셨을 고민, 세 가지</p>
+      <ol class="worries">
+        <li>매달 나가는 고정비, 더 줄일 수는 없을까?</li>
+        <li>우리 가게도 정책자금을 받을 수 있을까?</li>
+        <li>갚지 않아도 되는 정부지원금, 나도 해당될까?</li>
+      </ol>
+      <p class="hero-close">“안 될 거야” 하고 넘기기 전에, 먼저 확인해 보세요. <strong>티디코리아가 무료로 함께 확인해 드립니다.</strong></p>
+      <div class="hero-actions">
+        <a class="btn btn--kakao todo" href="#" data-kakao>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 3C6.5 3 2 6.6 2 11c0 2.8 1.9 5.3 4.7 6.7l-1 3.6c-.1.3.3.6.6.4l4.2-2.8c.5.1 1 .1 1.5.1 5.5 0 10-3.6 10-8S17.5 3 12 3z"/></svg>
+          무료로 확인받기
+        </a>
+        <a class="btn todo" href="tel:01000000000">전화 상담</a>
+        <a class="btn btn--ink" href="#check">내 매장 고정비 체크</a>
+      </div>
+    </div>
+
+    <div class="slip" aria-hidden="true">
+      <div class="slip-head">
+        <span class="slip-title">우리 가게 고정비</span>
+        <span class="slip-meta">매달 빠져나가는 것들</span>
+      </div>
+      <ul class="slip-rows">
+        <li><span>카드단말기</span><span class="blank">월 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;원</span></li>
+        <li><span>POS</span><span class="blank">월 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;원</span></li>
+        <li><span>인터넷</span><span class="blank">월 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;원</span></li>
+        <li><span>CCTV</span><span class="blank">월 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;원</span></li>
+        <li><span>렌탈 (정수기 등)</span><span class="blank">월 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;원</span></li>
+      </ul>
+      <div class="slip-total"><span>합계</span><span>얼마나 내고 계세요?</span></div>
+      <p class="slip-note">고지서 사진만 보내주시면 항목별로 확인해 드립니다.</p>
+      <div class="stamp stamp--corner">무료<br>확인</div>
+    </div>
+  </div>
+</section>
+
+<!-- 2. 사장님 고민 -->
+<section class="band" aria-labelledby="concerns-title">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2 id="concerns-title">사장님들이 가장 많이 물어보시는 것</h2>
+    </div>
+    <div class="concerns">
+      <div class="concern">
+        <q>단말기, 인터넷, CCTV… 다 따로 내고 있는데 이게 맞나?</q>
+        <p>업체도 약정도 제각각이라 한 번에 보기 어렵습니다. 고지서를 모아 지금 무엇에 얼마를 내는지부터 정리해 드립니다.</p>
+      </div>
+      <div class="concern">
+        <q>약정이 남았는데, 지금 바꾸면 손해 아닌가?</q>
+        <p>위약금이 줄어드는 비용보다 크면 지금 바꾸지 않습니다. 약정이 끝나는 시점에 맞춰 교체 계획을 세워 드립니다.</p>
+      </div>
+      <div class="concern">
+        <q>정책자금이나 지원금, 나랑은 상관없는 얘기 아닐까?</q>
+        <p>업종, 업력, 지역에 따라 해당되는 공고가 다릅니다. 지금 열려 있는 공고 중 확인해 볼 만한 것을 정리해 드립니다.</p>
+      </div>
+      <div class="concern">
+        <q>개업 준비할 게 너무 많은데 어디서부터 해야 하지?</q>
+        <p>단말기, POS, 인터넷, CCTV 설치 일정을 한 번에 맞추고, 개업 때 확인할 지원사업까지 같이 챙겨 드립니다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 3. 서비스 3묶음 -->
+<section id="services" aria-labelledby="services-title">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2 id="services-title">티디코리아가 하는 일</h2>
+      <p class="lede">정해진 요금표를 내밀지 않습니다. 매장 상황에 맞춰 항목을 다시 조합해, 지금보다 비용이 낮아지는 방향으로 설계합니다.</p>
+    </div>
+
+    <div class="service">
+      <div>
+        <h3>매장 고정비 절감</h3>
+        <p class="what">카드단말기·POS·인터넷·CCTV·렌탈</p>
+      </div>
+      <div>
+        <ul>
+          <li>지금 쓰는 항목과 월 요금, 약정 상태를 한 장으로 정리</li>
+          <li>바꿀 항목과 그대로 둘 항목을 나눠 매장에 맞는 조합 설계</li>
+          <li>통신사·단말기 업체가 달라도 한 번에 비교해 안내</li>
+          <li>설치 후 첫 청구서가 안내한 대로 나왔는지까지 확인</li>
+        </ul>
+        <p class="fine">줄어드는 금액은 매장마다 다릅니다. 확인 후 실제 조합으로 안내해 드립니다.</p>
+      </div>
+    </div>
+
+    <div class="service">
+      <div>
+        <h3>정부지원금·정책자금 코칭</h3>
+        <p class="what">공고 정리와 신청 준비</p>
+      </div>
+      <div>
+        <ul>
+          <li>업종·업력·지역 기준으로 확인해 볼 만한 공고 정리</li>
+          <li>공고별 자격 요건과 준비 서류 체크리스트 안내</li>
+          <li>신청서 작성 전에 빠진 부분이 없는지 함께 점검</li>
+          <li>매달 새로 열리는 소상공인 지원사업 소식 발송</li>
+        </ul>
+        <p class="fine">신청은 사장님 명의로 직접 하시며, 선정과 지급 여부는 각 기관의 심사로 결정됩니다.</p>
+      </div>
+    </div>
+
+    <div class="service">
+      <div>
+        <h3>사업 파트너 연결</h3>
+        <p class="what">매장 운영에 필요한 전문가</p>
+      </div>
+      <div>
+        <ul>
+          <li class="todo">세무, 노무, 인테리어 등 필요한 분야의 파트너 소개 (연결 분야 확정 필요)</li>
+          <li>상담 중 나온 고민에 맞는 곳으로 바로 연결</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. 개업 원스톱 세팅 -->
+<section id="opening" class="ink-band" aria-labelledby="opening-title">
+  <div class="wrap setup">
+    <div>
+      <h2 id="opening-title">개업 준비, 한 곳에서 맞춥니다</h2>
+      <p class="lede">설치 업체를 하나씩 부르면 날짜 맞추는 것부터 일입니다. 오픈 날짜만 알려주시면 순서와 일정을 맞춰 드립니다.</p>
+      <div class="hero-actions">
+        <a class="btn btn--kakao todo" href="#" data-kakao>카카오톡으로 개업 상담</a>
+      </div>
+    </div>
+    <ul class="checklist">
+      <li><i class="box" aria-hidden="true"></i><div><b>인터넷</b><span>매장 위치에서 가능한 통신사와 결합 조건 비교</span></div></li>
+      <li><i class="box" aria-hidden="true"></i><div><b>카드단말기</b><span>매장 형태에 맞는 유선·무선 단말기 선택</span></div></li>
+      <li><i class="box" aria-hidden="true"></i><div><b>POS</b><span>업종별로 필요한 기능 기준으로 선택</span></div></li>
+      <li><i class="box" aria-hidden="true"></i><div><b>CCTV</b><span>매장 구조에 맞춘 대수와 위치 설계</span></div></li>
+      <li><i class="box" aria-hidden="true"></i><div><b>렌탈</b><span>정수기 등 필요한 렌탈 품목 정리</span></div></li>
+      <li><i class="box" aria-hidden="true"></i><div><b>개업 지원사업</b><span>창업 시점에 확인할 수 있는 공고 정리</span></div></li>
+    </ul>
+  </div>
+</section>
+
+<!-- 5. 진행 과정 -->
+<section id="process" aria-labelledby="process-title">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2 id="process-title">이렇게 진행됩니다</h2>
+    </div>
+    <ol class="steps">
+      <li><h3>자료 보내기</h3><p>카카오톡으로 고지서 사진을 보내시거나, 아래 고정비 체크를 작성해 주세요.</p></li>
+      <li><h3>조합 설계</h3><p>받은 자료로 약정 상태를 확인하고, 매장에 맞는 조합을 설계합니다.</p></li>
+      <li><h3>상담</h3><p>전화나 방문으로 설계한 내용을 설명드립니다. 결정은 들어보신 뒤에 하시면 됩니다.</p></li>
+      <li><h3>설치와 확인</h3><p>설치 일정을 맞추고, 첫 청구서가 안내한 대로 나왔는지 함께 확인합니다.</p></li>
+    </ol>
+  </div>
+</section>
+
+<!-- 6. 왜 티디코리아 -->
+<section class="band" aria-labelledby="why-title">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2 id="why-title">티디코리아에 맡기는 이유</h2>
+    </div>
+    <div class="why">
+      <div>
+        <h3>요금표가 아니라 설계로 안내합니다</h3>
+        <p>같은 업종이어도 매장마다 쓰는 항목과 약정이 다릅니다. 정해진 상품을 권하지 않고, 지금 쓰는 것에서 출발해 조합을 짭니다.</p>
+      </div>
+      <div>
+        <h3>지금 바꾸면 손해일 때는 그렇게 말씀드립니다</h3>
+        <p>약정이 남아 위약금이 더 크다면 교체를 미루고, 만료 시점에 맞춘 계획을 드립니다.</p>
+      </div>
+      <div>
+        <h3>설치하고 끝내지 않습니다</h3>
+        <p>설치 후 첫 청구서까지 확인합니다. 안내와 다르게 나온 부분이 있으면 바로 잡아 드립니다.</p>
+      </div>
+      <div>
+        <h3>고정비와 지원금을 한 번에 봅니다</h3>
+        <p>매장 비용을 정리하다 보면 해당될 만한 지원사업도 보입니다. 따로 알아보실 필요 없이 함께 확인해 드립니다.</p>
+      </div>
+    </div>
+
+    <div class="alert-offer">
+      <div>
+        <strong>약정 끝나는 날, 저희가 기억해 드릴게요.</strong>
+        <p>단말기·인터넷 약정 만료 한 달 전에 카카오톡으로 알려드립니다. 지금 바꿀 계획이 없어도 신청하실 수 있습니다.</p>
+      </div>
+      <a class="btn btn--ink" href="#check" data-alert>만료 알림 신청</a>
+    </div>
+
+    <div class="people">
+      <div class="photo todo">대표 사진 자리<br>(이름, 한 줄 인사)</div>
+      <div class="photo todo">사무실·설치 사례 사진 자리</div>
+    </div>
+  </div>
+</section>
+
+<!-- 7. FAQ -->
+<section id="faq" aria-labelledby="faq-title">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2 id="faq-title">자주 묻는 질문</h2>
+    </div>
+    <div class="faq">
+      <details>
+        <summary>확인받는 데 비용이 드나요?</summary>
+        <div class="a">아니요. 고지서 확인, 조합 설계, 지원사업 정리까지 상담은 무료입니다. 상담을 받았다고 계약하셔야 하는 것도 아닙니다.</div>
+      </details>
+      <details>
+        <summary>얼마나 줄어드는지 미리 알 수 있나요?</summary>
+        <div class="a">매장마다 쓰는 항목과 약정이 달라서 자료를 보기 전에는 말씀드리기 어렵습니다. 고지서를 확인한 뒤 실제 조합으로 안내해 드립니다.</div>
+      </details>
+      <details>
+        <summary>약정이 언제 끝나는지 모르겠어요.</summary>
+        <div class="a">대부분 정확한 날짜를 기억하지 못하십니다. 통신사 고객센터나 앱, 단말기 업체에서 확인하는 방법을 알려드리고, 원하시면 함께 확인해 드립니다.</div>
+      </details>
+      <details>
+        <summary>정책자금이나 지원금을 대신 받아주시나요?</summary>
+        <div class="a">신청은 사장님 명의로 직접 하셔야 하고, 선정 여부는 각 기관이 심사로 결정합니다. 티디코리아는 확인해 볼 만한 공고를 정리하고, 요건과 서류 준비를 함께 점검해 드립니다.</div>
+      </details>
+      <details>
+        <summary>지금 쓰는 통신사나 업체와 달라도 되나요?</summary>
+        <div class="a">네. 통신사와 단말기 업체가 달라도 한 번에 비교해 안내해 드립니다.</div>
+      </details>
+      <details>
+        <summary>어느 지역까지 방문하나요?</summary>
+        <div class="a todo">방문 가능 지역을 적어 주세요. 그 외 지역은 전화와 카카오톡으로 상담합니다.</div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- 8. 고정비 체크 + 상담 신청 -->
+<section id="check" class="band" aria-labelledby="check-title">
+  <div class="wrap check">
+    <div class="check-aside">
+      <h2 id="check-title">내 매장 고정비 체크</h2>
+      <p class="lede">쓰고 있는 항목에 체크하고 월 요금을 적어 주세요. 정확하지 않아도 괜찮습니다. 확인 후 연락드립니다.</p>
+      <div class="alt">
+        <p>적기 번거로우시면 고지서 사진을 카카오톡으로 보내셔도 됩니다.</p>
+        <a class="btn btn--kakao todo" href="#" data-kakao>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 3C6.5 3 2 6.6 2 11c0 2.8 1.9 5.3 4.7 6.7l-1 3.6c-.1.3.3.6.6.4l4.2-2.8c.5.1 1 .1 1.5.1 5.5 0 10-3.6 10-8S17.5 3 12 3z"/></svg>
+          고지서 사진 보내기
+        </a>
+      </div>
+    </div>
+
+    <form class="slip" id="checkForm" novalidate>
+      <div class="stamp" aria-hidden="true">접수</div>
+
+      <div class="form-body">
+        <div class="slip-head">
+          <span class="slip-title">우리 가게 고정비</span>
+          <span class="slip-meta">해당 항목만 체크</span>
+        </div>
+
+        <fieldset id="items">
+          <legend class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">사용 중인 항목과 월 요금</legend>
+        </fieldset>
+
+        <div class="sum"><span>입력하신 월 요금 합계</span><output id="sum" aria-live="polite">0원</output></div>
+        <p class="sum-hint">지금 내고 계신 금액입니다. 줄어드는 금액은 확인 후 안내해 드립니다.</p>
+
+        <p class="group-title">함께 확인받고 싶은 것</p>
+        <div class="extras">
+          <label><input type="checkbox" name="extra" value="지원금">정부지원금·정책자금 해당 여부</label>
+          <label><input type="checkbox" name="extra" value="개업">개업 준비 (설치 일정 맞추기)</label>
+          <label><input type="checkbox" name="extra" value="만료알림" id="alertOpt">약정 만료 한 달 전 카카오톡 알림</label>
+        </div>
+
+        <p class="group-title">연락받으실 곳</p>
+        <div class="fields">
+          <div class="field"><label for="f-name">성함 <span class="req">*</span></label><input id="f-name" name="name" type="text" autocomplete="name" required></div>
+          <div class="field"><label for="f-tel">연락처 <span class="req">*</span></label><input id="f-tel" name="tel" type="tel" inputmode="tel" autocomplete="tel" placeholder="010-1234-5678" required></div>
+          <div class="field"><label for="f-shop">상호</label><input id="f-shop" name="shop" type="text" autocomplete="organization"></div>
+          <div class="field"><label for="f-type">업종</label>
+            <select id="f-type" name="type">
+              <option value="">선택해 주세요</option>
+              <option>음식점·카페</option><option>소매·편의점</option><option>미용·뷰티</option>
+              <option>학원·교육</option><option>병원·약국</option><option>개업 준비 중</option><option>기타</option>
+            </select>
+          </div>
+          <div class="field full"><label for="f-area">매장 지역</label><input id="f-area" name="area" type="text" placeholder="예: ○○구 ○○동"></div>
+          <div class="field full"><label for="f-memo">더 알려주실 내용</label><textarea id="f-memo" name="memo" rows="3"></textarea></div>
+        </div>
+
+        <label class="consent"><input type="checkbox" id="f-consent" required>
+          <span>상담을 위한 개인정보 수집·이용에 동의합니다. (성함, 연락처, 매장 정보 / 상담 목적 / 상담 종료 후 <span class="todo">○년</span> 보관) <a href="#privacy">자세히 보기</a></span>
+        </label>
+        <p class="error" id="formError" role="alert"></p>
+        <button class="btn btn--ink submit" type="submit">무료로 확인받기</button>
+      </div>
+
+      <div class="done" tabindex="-1" id="done">
+        <h3>접수됐습니다</h3>
+        <p>보내주신 내용을 확인한 뒤 남겨주신 번호로 연락드립니다. 고지서 사진이 있으면 카카오톡으로 함께 보내주세요. 더 정확하게 확인할 수 있습니다.</p>
+        <div class="hero-actions">
+          <a class="btn btn--kakao todo" href="#" data-kakao>고지서 사진 보내기</a>
+        </div>
+      </div>
+    </form>
+  </div>
+</section>
+
+</main>
+
+<!-- 9. 사업자정보 -->
+<footer>
+  <div class="wrap">
+    <span class="logo">티디코리아</span>
+    <dl class="todo">
+      <dt>상호</dt><dd>티디코리아</dd>
+      <dt>대표</dt><dd>○○○</dd>
+      <dt>사업자등록번호</dt><dd>000-00-00000</dd>
+      <dt>주소</dt><dd>○○시 ○○구 ○○로 00</dd>
+      <dt>전화</dt><dd>010-0000-0000</dd>
+      <dt>이메일</dt><dd>○○○@○○○.com</dd>
+    </dl>
+    <div class="links">
+      <a href="#privacy" id="privacy">개인정보처리방침</a>
+      <a href="#" data-kakao class="todo">카카오톡 채널</a>
+    </div>
+    <p class="legal">상담에서 안내하는 비용은 매장의 현재 이용 조건과 약정 상태에 따라 달라집니다. 정부지원금·정책자금의 선정과 지급은 각 기관의 심사로 결정되며, 티디코리아는 공고 정리와 신청 준비를 돕습니다.</p>
+  </div>
+</footer>
+
+<div class="bar">
+  <a class="btn todo" href="tel:01000000000">전화 상담</a>
+  <a class="btn btn--kakao todo" href="#" data-kakao>무료로 확인받기</a>
+</div>
+
+<script>
+  // 카카오톡 채널 주소를 받으면 여기에 넣으세요 (예: https://pf.kakao.com/_xxxxx/chat)
+  const KAKAO_URL = "#";
+  document.querySelectorAll("[data-kakao]").forEach(a => { a.href = KAKAO_URL; });
+
+  const ITEMS = [
+    { key: "card", label: "카드단말기" },
+    { key: "pos", label: "POS" },
+    { key: "net", label: "인터넷" },
+    { key: "cctv", label: "CCTV" },
+    { key: "rental", label: "렌탈 (정수기 등)" },
+  ];
+
+  const itemsEl = document.getElementById("items");
+  ITEMS.forEach(({ key, label }) => {
+    const el = document.createElement("div");
+    el.className = "item";
+    el.innerHTML = `
+      <div class="item-main">
+        <label class="use"><input type="checkbox" name="use_${key}">${label}</label>
+        <div class="fee">
+          <input type="text" inputmode="numeric" name="fee_${key}" aria-label="${label} 월 요금" placeholder="월 요금">
+          <span>원</span>
+        </div>
+      </div>
+      <div class="item-more">
+        <p class="q" id="q1_${key}">약정이 남아 있나요?</p>
+        <div class="chips" role="radiogroup" aria-labelledby="q1_${key}">
+          ${["남아 있음", "끝남", "잘 모르겠음"].map(v => `<label class="chip"><input type="radio" name="contract_${key}" value="${v}"><span>${v}</span></label>`).join("")}
+        </div>
+        <div class="remain" hidden>
+          <p class="q" id="q2_${key}">얼마나 남았나요?</p>
+          <div class="chips" role="radiogroup" aria-labelledby="q2_${key}">
+            ${["6개월 이내", "6개월~1년", "1년 이상"].map(v => `<label class="chip"><input type="radio" name="remain_${key}" value="${v}"><span>${v}</span></label>`).join("")}
+          </div>
+        </div>
+        <p class="contract-tip"></p>
+      </div>`;
+    itemsEl.appendChild(el);
+
+    const use = el.querySelector(`[name=use_${key}]`);
+    const fee = el.querySelector(`[name=fee_${key}]`);
+    const remain = el.querySelector(".remain");
+    const tip = el.querySelector(".contract-tip");
+
+    use.addEventListener("change", () => { el.classList.toggle("on", use.checked); updateSum(); });
+    fee.addEventListener("input", () => {
+      const digits = fee.value.replace(/[^0-9]/g, "");
+      fee.value = digits ? Number(digits).toLocaleString("ko-KR") : "";
+      if (digits && !use.checked) { use.checked = true; el.classList.add("on"); }
+      updateSum();
+    });
+    el.querySelectorAll(`[name=contract_${key}]`).forEach(r => r.addEventListener("change", () => {
+      remain.hidden = r.value !== "남아 있음";
+      tip.textContent = {
+        "남아 있음": "위약금과 바꿨을 때 줄어드는 비용을 비교해 안내해 드립니다. 위약금이 더 크면 만료 시점에 맞춰 계획을 세웁니다.",
+        "끝남": "바로 비교해 볼 수 있는 항목입니다.",
+        "잘 모르겠음": "괜찮습니다. 통신사 고객센터·앱이나 단말기 업체에서 확인하는 방법을 알려드리고, 원하시면 함께 확인해 드립니다.",
+      }[r.value];
+      tip.classList.add("show");
+    }));
+  });
+
+  const sumEl = document.getElementById("sum");
+  function updateSum() {
+    let total = 0;
+    ITEMS.forEach(({ key }) => {
+      if (!document.querySelector(`[name=use_${key}]`).checked) return;
+      total += Number(document.querySelector(`[name=fee_${key}]`).value.replace(/[^0-9]/g, "")) || 0;
+    });
+    sumEl.textContent = total.toLocaleString("ko-KR") + "원";
+  }
+
+  document.querySelectorAll("[data-alert]").forEach(a => a.addEventListener("click", () => {
+    document.getElementById("alertOpt").checked = true;
+  }));
+
+  const form = document.getElementById("checkForm");
+  const err = document.getElementById("formError");
+  form.addEventListener("submit", e => {
+    e.preventDefault();
+    const name = form.elements.name.value.trim();
+    const tel = form.elements.tel.value.replace(/[^0-9]/g, "");
+    if (!name) { err.textContent = "성함을 적어 주세요."; form.elements.name.focus(); return; }
+    if (tel.length < 9) { err.textContent = "연락받으실 번호를 숫자로 적어 주세요. 예: 010-1234-5678"; form.elements.tel.focus(); return; }
+    if (!document.getElementById("f-consent").checked) { err.textContent = "개인정보 수집·이용에 동의해 주셔야 접수할 수 있습니다."; document.getElementById("f-consent").focus(); return; }
+    err.textContent = "";
+    // TODO: 아임웹 폼 또는 접수 주소로 전송 (new FormData(form))
+    form.classList.add("sent");
+    document.getElementById("done").focus();
+  });
+</script>
+</body>
+</html>
