@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>티디코리아 | 매장 고정비 무료 확인</title>
-<meta name="description" content="카드단말기·POS·인터넷·CCTV·렌탈, 매장 상황에 맞춰 조합을 다시 설계합니다. 정부지원금·정책자금도 무료로 함께 확인해 드립니다.">
+<meta name="description" content="카드단말기·POS·키오스크·인터넷·CCTV·렌탈, 매장 상황에 맞춰 조합을 다시 설계합니다. 정부지원금·정책자금도 무료로 함께 확인해 드립니다.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -205,6 +205,7 @@
 
   /* Check form */
   .check { display: grid; gap: 40px; }
+  .check > * { min-width: 0; }
   @media (min-width: 960px) { .check { grid-template-columns: 0.8fr 1.2fr; align-items: start; } .check-aside { position: sticky; top: 24px; } }
   .check-aside .alt { margin-top: 28px; padding-top: 24px; border-top: 1px solid var(--rule); }
   .check-aside .alt p { color: var(--muted); margin-bottom: 14px; }
@@ -255,12 +256,29 @@
   .count input { width: 88px; text-align: right; }
   .count span { color: var(--muted); }
 
+  .count input.wide { width: 180px; }
+  .box-price { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; margin-bottom: 14px; }
+  @media (min-width: 560px) { .box-price { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  .box-price label { display: grid; gap: 4px; font-size: 14px; color: var(--muted); }
+  .won { display: flex; align-items: center; gap: 6px; color: var(--muted); }
+  .won input { flex: 1 1 0; width: 0; min-width: 0; text-align: right; }
+  .box-total { grid-column: 1 / -1; display: flex; justify-content: space-between; font-weight: 600; font-size: 15px; padding-top: 8px; border-top: 1px dashed var(--rule); font-variant-numeric: tabular-nums; }
+  .upload { margin: 14px 0 6px; padding: 14px; border-radius: 4px; background: var(--band); font-size: 15px; }
+  .upload p { margin-bottom: 10px; }
+  .upload-btn { min-height: 44px; font-size: 15px; }
+  #liquor_receipt:focus-visible + .thumbs, .upload:focus-within .upload-btn { outline: 3px solid var(--ink); outline-offset: 2px; }
+  .thumbs { list-style: none; margin: 10px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .thumbs img { width: 64px; height: 64px; object-fit: cover; border-radius: 4px; border: 1px solid var(--rule); }
+  .thumbs-note { font-size: 14px; color: var(--muted); }
+  #liquorRows .item-more { margin-left: 32px; }
+  @media (max-width: 479px) { #liquorRows .item-more { margin-left: 0; } }
+
   .multi { margin-top: 24px; }
   .multi-title { font-family: var(--display); font-size: 22px; }
   .multi-hint { font-size: 14px; color: var(--muted); }
   .rows { border-top: 1px dashed var(--rule); margin-top: 8px; }
   .row .item-main { gap: 10px; }
-  .row-name { display: flex; gap: 8px; flex: 1 1 200px; flex-wrap: wrap; }
+  .row-name { display: flex; gap: 8px; flex: 1 1 200px; flex-wrap: wrap; min-width: 0; max-width: 100%; }
   .row-name select, .row-name input { flex: 1 1 140px; min-width: 0; }
   .row .item-more { margin-left: 0; }
   .remove { background: none; border: 0; color: var(--muted); font: 500 14px/1 var(--body); padding: 10px 4px; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
@@ -416,7 +434,7 @@
     <div class="service">
       <div>
         <h3>매장 고정비 절감</h3>
-        <p class="what">카드단말기·POS·인터넷·CCTV·렌탈</p>
+        <p class="what">카드단말기·POS·키오스크·인터넷·CCTV·렌탈</p>
       </div>
       <div>
         <ul>
@@ -474,7 +492,7 @@
     <ul class="checklist">
       <li><i class="box" aria-hidden="true"></i><div><b>인터넷</b><span>매장 위치에서 가능한 통신사와 결합 조건 비교</span></div></li>
       <li><i class="box" aria-hidden="true"></i><div><b>카드단말기</b><span>매장 형태에 맞는 유선·무선 단말기 선택</span></div></li>
-      <li><i class="box" aria-hidden="true"></i><div><b>POS</b><span>업종별로 필요한 기능 기준으로 선택</span></div></li>
+      <li><i class="box" aria-hidden="true"></i><div><b>POS·키오스크</b><span>업종별로 필요한 기능 기준으로 선택</span></div></li>
       <li><i class="box" aria-hidden="true"></i><div><b>CCTV</b><span>매장 구조에 맞춘 대수와 위치 설계</span></div></li>
       <li><i class="box" aria-hidden="true"></i><div><b>렌탈</b><span>정수기 등 필요한 렌탈 품목 정리</span></div></li>
       <li><i class="box" aria-hidden="true"></i><div><b>주류 거래처</b><span>음식점·주점이라면 거래할 주류업체 연결</span></div></li>
@@ -615,6 +633,12 @@
           <button type="button" class="add" id="addOther">+ 기타 비용 추가</button>
         </fieldset>
 
+        <fieldset class="multi" id="liquor">
+          <legend class="multi-title">주류 거래처</legend>
+          <p class="multi-hint">음식점·주점이라면 적어 주세요. 주류 매입은 위 고정비 합계에 넣지 않습니다.</p>
+          <div class="rows" id="liquorRows"></div>
+        </fieldset>
+
         <div class="sum"><span>입력하신 월 요금 합계</span><output id="sum" aria-live="polite">0원</output></div>
         <p class="sum-hint">지금 내고 계신 금액입니다. 줄어드는 금액은 확인 후 안내해 드립니다.</p>
 
@@ -737,7 +761,7 @@
   // 고정 항목: 카드단말기, POS, 인터넷, CCTV
   const POS_SPEC = `
     <p class="q">어떤 구성인가요? (해당하는 것 모두)</p>
-    <div class="chips">${chips("checkbox", "spec_pos", ["기본 세트 (모니터·금전함·멀티패드·프린터)", "듀얼 모니터", "벽면 모니터", "주방 프린터", "키오스크", "테이블오더", "잘 모르겠음"])}</div>
+    <div class="chips">${chips("checkbox", "spec_pos", ["기본 세트 (모니터·금전함·멀티패드·프린터)", "듀얼 모니터", "벽면 모니터", "주방 프린터", "테이블오더", "잘 모르겠음"])}</div>
     <input class="spec-etc" type="text" name="spec_pos_etc" aria-label="그 밖에 연결된 POS 장비" placeholder="그 밖에 연결된 장비 (예: 바코드 스캐너)">
     <div class="photo-tip" hidden>
       <p>괜찮습니다. 사용 중인 POS를 사진으로 찍어 카카오톡으로 보내주세요. 연결된 장비가 함께 보이게 찍어 주시면 됩니다.</p>
@@ -749,31 +773,86 @@
     <p class="q"><label for="cctv_count">몇 대인가요?</label></p>
     <div class="count"><input type="number" id="cctv_count" name="count_cctv" min="1" max="99" inputmode="numeric" placeholder="0"><span>대</span></div>`;
 
+  const KIOSK_SPEC = `
+    <p class="q"><label for="kiosk_count">몇 대인가요?</label></p>
+    <div class="count"><input type="number" id="kiosk_count" name="count_kiosk" min="1" max="99" inputmode="numeric" placeholder="0"><span>대</span></div>`;
+
+  // 주류: 참이슬 후레쉬 1박스(20병) 기준 단가
+  const LIQUOR_SPEC = `
+    <p class="q">참이슬 후레쉬 1박스(20병) 기준으로 적어 주세요.</p>
+    <div class="box-price">
+      <label>단가<span class="won"><input type="text" inputmode="numeric" name="liquor_price" data-box placeholder="0">원</span></label>
+      <label>부가세<span class="won"><input type="text" inputmode="numeric" name="liquor_vat" data-box placeholder="0">원</span></label>
+      <label>공병·용기 보증금<span class="won"><input type="text" inputmode="numeric" name="liquor_deposit" data-box placeholder="0">원</span></label>
+      <p class="box-total">1박스 합계 <output id="boxTotal">0원</output></p>
+    </div>
+    <p class="q"><label for="liquor_monthly">주류 매입은 한 달에 얼마 정도인가요?</label></p>
+    <div class="count"><input type="text" id="liquor_monthly" name="liquor_monthly" inputmode="numeric" data-won placeholder="대략적인 금액" class="wide"><span>원</span></div>
+    <p class="q" id="q_liquor_loan">주류대출을 받으셨나요?</p>
+    <div class="chips" role="radiogroup" aria-labelledby="q_liquor_loan">${chips("radio", "liquor_loan", ["받았음", "안 받았음", "잘 모르겠음"])}</div>
+    <p class="q"><label for="fridge_count">지금 거래처에서 냉장고를 몇 대 지원받으셨나요?</label></p>
+    <div class="count"><input type="number" id="fridge_count" name="fridge_count" min="0" max="99" inputmode="numeric" placeholder="0"><span>대</span></div>
+    <div class="upload">
+      <p>단가를 잘 모르시겠다면 주류업체에서 받은 영수증(거래명세서)을 찍어 올려 주세요.</p>
+      <label class="btn upload-btn" for="liquor_receipt">영수증 사진 올리기</label>
+      <input type="file" id="liquor_receipt" name="liquor_receipt" accept="image/*" multiple class="vh">
+      <ul class="thumbs" id="receiptThumbs" aria-live="polite"></ul>
+    </div>`;
+
   const ITEMS = [
     { key: "card", label: "카드단말기" },
     { key: "pos", label: "POS", spec: POS_SPEC },
+    { key: "kiosk", label: "키오스크", spec: KIOSK_SPEC },
     { key: "net", label: "인터넷" },
     { key: "cctv", label: "CCTV", spec: CCTV_SPEC },
+    { key: "liquor", label: "주류업체와 거래하고 있어요", spec: LIQUOR_SPEC, fee: false, contract: false, into: "liquorRows" },
   ];
 
-  const itemsEl = document.getElementById("items");
-  ITEMS.forEach(({ key, label, spec = "" }) => {
+  ITEMS.forEach(({ key, label, spec = "", fee = true, contract = true, into = "items" }) => {
     const el = document.createElement("div");
     el.className = "item";
     el.innerHTML = `
       <div class="item-main">
         <label class="use"><input type="checkbox" name="use_${key}">${label}</label>
-        ${feeHTML(`fee_${key}`, label)}
+        ${fee ? feeHTML(`fee_${key}`, label) : ""}
       </div>
-      <div class="item-more">${spec}${contractHTML(key)}</div>`;
-    itemsEl.appendChild(el);
+      <div class="item-more">${spec}${contract ? contractHTML(key) : ""}</div>`;
+    document.getElementById(into).appendChild(el);
 
     const use = el.querySelector(`[name=use_${key}]`);
     use.addEventListener("change", () => { el.classList.toggle("on", use.checked); updateSum(); });
-    wireFee(el, el.querySelector("[data-fee]"), has => {
+    if (fee) wireFee(el, el.querySelector("[data-fee]"), has => {
       if (has && !use.checked) { use.checked = true; el.classList.add("on"); }
     });
-    wireContract(el, key);
+    if (contract) wireContract(el, key);
+  });
+
+  // 주류: 금액 칸 쉼표, 1박스 합계, 영수증 미리보기
+  const won = v => Number(v.replace(/[^0-9]/g, "")) || 0;
+  document.querySelectorAll("[data-box], [data-won]").forEach(input => input.addEventListener("input", () => {
+    const n = won(input.value);
+    input.value = n ? n.toLocaleString("ko-KR") : "";
+    const total = [...document.querySelectorAll("[data-box]")].reduce((t, i) => t + won(i.value), 0);
+    document.getElementById("boxTotal").textContent = total.toLocaleString("ko-KR") + "원";
+  }));
+  const receipt = document.getElementById("liquor_receipt");
+  const thumbs = document.getElementById("receiptThumbs");
+  receipt.addEventListener("change", () => {
+    thumbs.innerHTML = "";
+    [...receipt.files].forEach(file => {
+      const li = document.createElement("li");
+      const img = document.createElement("img");
+      img.src = URL.createObjectURL(file);
+      img.alt = file.name;
+      li.append(img);
+      thumbs.append(li);
+    });
+    if (receipt.files.length) {
+      const note = document.createElement("li");
+      note.className = "thumbs-note";
+      note.textContent = `${receipt.files.length}장 선택됨`;
+      thumbs.append(note);
+    }
   });
 
   // POS 사양을 모르면 사진 안내
