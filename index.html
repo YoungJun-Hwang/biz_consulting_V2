@@ -5,15 +5,26 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>티디코리아 | 매장 고정비 무료 확인</title>
 <meta name="description" content="카드단말기·POS·키오스크·인터넷·CCTV·렌탈, 매장 상황에 맞춰 조합을 다시 설계합니다. 정부지원금·정책자금도 무료로 함께 확인해 드립니다.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="preload" href="https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2112@c2d7413f4e1cf5b77277a9f7f52fa22acd1e4c32/establishRetrosansOTF.woff" as="font" type="font/woff" crossorigin>
 <!--
   초안 메모
   - 빨간 점선(.todo)으로 표시한 곳은 실제 정보로 바꿔야 하는 자리입니다 (전화번호, 카카오톡 채널 주소, 사업자정보).
   - 고정비 체크 폼은 화면 동작만 있고 아직 어디로도 전송하지 않습니다. 아임웹 폼이나 접수 주소에 연결해야 합니다.
 -->
 <style>
+  /* 제목: 설립체(Establish Retrosans, 스스로넷) / 본문: SUIT Variable (SIL OFL) */
+  @font-face {
+    font-family: "Establish Retrosans";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2112@c2d7413f4e1cf5b77277a9f7f52fa22acd1e4c32/establishRetrosansOTF.woff") format("woff");
+    font-weight: 400; font-style: normal; font-display: swap;
+  }
+  @font-face {
+    font-family: "SUIT Variable";
+    src: url("https://cdn.jsdelivr.net/gh/sun-typeface/SUIT@55118d981336d8fce005eb62888c12c0568ef7b0/fonts/variable/woff2/SUIT-Variable.woff2") format("woff2");
+    font-weight: 100 900; font-style: normal; font-display: swap;
+  }
+
   :root {
     --paper: #F6F7F4;
     --sheet: #FFFFFF;
@@ -24,8 +35,8 @@
     --seal: #C2372E;
     --kakao: #FEE500;
     --kakao-ink: #191600;
-    --display: "Do Hyeon", "IBM Plex Sans KR", sans-serif;
-    --body: "IBM Plex Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    --display: "Establish Retrosans", "SUIT Variable", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    --body: "SUIT Variable", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
     --gutter: 16px;
     --max: 1120px;
   }
@@ -72,13 +83,14 @@
   /* Header */
   .top { border-bottom: 1px solid var(--rule); background: var(--paper); }
   .top .wrap { display: flex; align-items: center; justify-content: space-between; min-height: 64px; gap: 16px; }
-  .logo { font-family: var(--display); font-size: 26px; text-decoration: none; letter-spacing: -0.02em; }
-  .logo small { font-family: var(--body); font-size: 13px; color: var(--muted); margin-left: 8px; letter-spacing: 0; }
+  .logo { display: inline-flex; align-items: center; gap: 12px; text-decoration: none; }
+  .logo img { width: 150px; height: auto; }
+  .logo small { font-size: 13px; color: var(--muted); padding-left: 12px; border-left: 1px solid var(--rule); line-height: 1.2; }
   .top nav { display: none; gap: 24px; font-size: 15px; }
   .top nav a { text-decoration: none; color: var(--muted); }
   .top nav a:hover { color: var(--ink); }
   .top-call { font-weight: 600; font-size: 15px; text-decoration: none; white-space: nowrap; }
-  @media (max-width: 479px) { .logo small { display: none; } }
+  @media (max-width: 479px) { .logo small { display: none; } .logo img { width: 128px; } }
   @media (min-width: 900px) { .top nav { display: flex; } }
 
   /* Hero */
@@ -89,7 +101,7 @@
   .worries { list-style: none; margin: 16px 0 0; padding: 0; counter-reset: w; }
   .worries li {
     font-family: var(--display);
-    font-size: clamp(30px, 5.4vw, 50px);
+    font-size: clamp(28px, 4.8vw, 44px);
     line-height: 1.22;
     padding: 12px 0;
     border-bottom: 1px solid var(--rule);
@@ -122,7 +134,7 @@
   .slip-rows li { display: flex; justify-content: space-between; gap: 12px; padding: 12px 0; border-bottom: 1px dashed var(--rule); }
   .slip-rows .blank { color: var(--muted); min-width: 7.5em; text-align: right; border-bottom: 1px solid var(--ink); line-height: 1.3; }
   .slip-total { display: flex; justify-content: space-between; padding-top: 14px; font-weight: 700; }
-  .slip-note { margin-top: 18px; font-size: 14px; color: var(--muted); max-width: 22em; }
+  .slip-note { margin-top: 18px; font-size: 14px; color: var(--muted); max-width: min(22em, calc(100% - 100px)); }
 
   .stamp {
     position: absolute; right: 18px; bottom: 54px;
@@ -136,6 +148,18 @@
     pointer-events: none;
   }
   .stamp--corner { right: -14px; bottom: -34px; }
+
+  /* Store photo */
+  .store-photo { margin: 0; position: relative; }
+  .store-photo img { width: 100%; height: clamp(240px, 42vw, 560px); object-fit: cover; object-position: 72% 20%; }
+  .store-photo figcaption { display: none; }
+  @media (min-width: 900px) {
+    .store-photo figcaption {
+      display: block; position: absolute; top: 50%; transform: translateY(-50%);
+      left: max(32px, calc((100% - var(--max)) / 2 + 32px)); width: min(26%, 300px);
+      font-family: var(--display); font-size: clamp(24px, 2.4vw, 32px); line-height: 1.4; color: var(--ink);
+    }
+  }
 
   /* Sections */
   section { padding: 72px 0; }
@@ -323,7 +347,8 @@
   /* Footer */
   footer { background: var(--ink); color: #B8C6CB; padding: 48px 0 120px; font-size: 14px; line-height: 1.8; }
   @media (min-width: 900px) { footer { padding-bottom: 48px; } }
-  footer .logo { color: var(--paper); display: inline-block; margin-bottom: 12px; }
+  footer .logo { margin-bottom: 16px; }
+  footer .logo img { filter: brightness(0) invert(1); }
   footer dl { display: grid; grid-template-columns: max-content 1fr; gap: 2px 16px; margin: 0; }
   footer dt { color: #8FA2A9; }
   footer dd { margin: 0; }
@@ -341,7 +366,7 @@
 
 <header class="top">
   <div class="wrap">
-    <a class="logo" href="#">티디코리아<small>매장 고정비·지원금 확인</small></a>
+    <a class="logo" href="#"><img src="assets/td-korea-logo.png" width="150" height="40" alt="TD KOREA 티디코리아"><small>매장 고정비·지원금 확인</small></a>
     <nav aria-label="주요 메뉴">
       <a href="#services">서비스</a>
       <a href="#opening">개업 준비</a>
@@ -395,6 +420,12 @@
     </div>
   </div>
 </section>
+
+<!-- 매장 사진 -->
+<figure class="store-photo">
+  <img src="assets/td-korea-store.jpg" width="1672" height="941" alt="카운터 위 POS와 벽면 인터넷 공유기, 공기청정기, 정수기가 놓인 카페 매장">
+  <figcaption>POS, 인터넷, 정수기, 공기청정기. 매달 나가는 비용을 한 번에 봅니다.</figcaption>
+</figure>
 
 <!-- 2. 사장님 고민 -->
 <section class="band" aria-labelledby="concerns-title">
@@ -691,7 +722,7 @@
 <!-- 9. 사업자정보 -->
 <footer>
   <div class="wrap">
-    <span class="logo">티디코리아</span>
+    <span class="logo"><img src="assets/td-korea-logo.png" width="150" height="40" alt="TD KOREA 티디코리아"></span>
     <dl class="todo">
       <dt>상호</dt><dd>티디코리아</dd>
       <dt>대표</dt><dd>○○○</dd>
