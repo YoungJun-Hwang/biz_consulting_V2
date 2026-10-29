@@ -1,0 +1,1281 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>티디코리아 | 매장 고정비 무료 확인</title>
+<meta name="description" content="카드단말기·POS·키오스크·인터넷·CCTV·렌탈, 매장 상황에 맞춰 조합을 다시 설계합니다. 정부지원금·정책자금도 무료로 함께 확인해 드립니다.">
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="preload" href="https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2112@c2d7413f4e1cf5b77277a9f7f52fa22acd1e4c32/establishRetrosansOTF.woff" as="font" type="font/woff" crossorigin>
+<!--
+  초안 메모
+  - 빨간 점선(.todo)으로 표시한 곳은 실제 정보로 바꿔야 하는 자리입니다 (전화번호, 카카오톡 채널 주소, 사업자정보).
+  - 고정비 체크 폼은 화면 동작만 있고 아직 어디로도 전송하지 않습니다. 아임웹 폼이나 접수 주소에 연결해야 합니다.
+-->
+<style>
+  /* 제목: 설립체(Establish Retrosans, 스스로넷) / 본문: SUIT Variable (SIL OFL) */
+  @font-face {
+    font-family: "Establish Retrosans";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2112@c2d7413f4e1cf5b77277a9f7f52fa22acd1e4c32/establishRetrosansOTF.woff") format("woff");
+    font-weight: 400; font-style: normal; font-display: swap;
+  }
+  @font-face {
+    font-family: "SUIT Variable";
+    src: url("https://cdn.jsdelivr.net/gh/sun-typeface/SUIT@55118d981336d8fce005eb62888c12c0568ef7b0/fonts/variable/woff2/SUIT-Variable.woff2") format("woff2");
+    font-weight: 100 900; font-style: normal; font-display: swap;
+  }
+
+  :root {
+    --paper: #F6F7F4;
+    --sheet: #FFFFFF;
+    --band: #E6ECE8;
+    --ink: #13293A;
+    --muted: #5A6A70;
+    --rule: #C7D0CC;
+    --seal: #C2372E;
+    --kakao: #FEE500;
+    --kakao-ink: #191600;
+    --display: "Establish Retrosans", "SUIT Variable", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    --body: "SUIT Variable", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    --gutter: 16px;
+    --max: 1120px;
+  }
+
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: 17px;
+    line-height: 1.7;
+    word-break: keep-all;
+    -webkit-font-smoothing: antialiased;
+  }
+  img { max-width: 100%; display: block; }
+  a { color: inherit; }
+  :focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; border-radius: 2px; }
+
+  .wrap { max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter); }
+  @media (min-width: 720px) { :root { --gutter: 32px; } }
+
+  h1, h2, h3 { font-family: var(--display); font-weight: 400; line-height: 1.25; margin: 0; letter-spacing: -0.01em; }
+  h2 { font-size: clamp(30px, 5vw, 44px); }
+  h3 { font-size: 24px; }
+  p { margin: 0; }
+  .lede { color: var(--muted); max-width: 34em; margin-top: 12px; }
+
+  .todo { outline: 2px dashed var(--seal); outline-offset: 2px; }
+
+  /* Buttons */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    min-height: 52px; padding: 0 22px;
+    border: 2px solid var(--ink); border-radius: 6px;
+    font: 600 17px/1 var(--body); text-decoration: none; cursor: pointer;
+    background: var(--sheet); color: var(--ink);
+  }
+  .btn--ink { background: var(--ink); color: var(--sheet); }
+  .btn--kakao { background: var(--kakao); color: var(--kakao-ink); border-color: var(--kakao); }
+  .btn svg { width: 20px; height: 20px; flex: none; }
+
+  /* Header */
+  .top { border-bottom: 1px solid var(--rule); background: var(--paper); }
+  .top .wrap { display: flex; align-items: center; justify-content: space-between; min-height: 64px; gap: 16px; }
+  .logo { display: inline-flex; align-items: center; gap: 12px; text-decoration: none; }
+  .logo img { width: 150px; height: auto; }
+  .logo small { font-size: 13px; color: var(--muted); padding-left: 12px; border-left: 1px solid var(--rule); line-height: 1.2; }
+  .top nav { display: none; gap: 24px; font-size: 15px; }
+  .top nav a { text-decoration: none; color: var(--muted); }
+  .top nav a:hover { color: var(--ink); }
+  .top-call { font-weight: 600; font-size: 15px; text-decoration: none; white-space: nowrap; }
+  @media (max-width: 479px) { .logo small { display: none; } .logo img { width: 128px; } }
+  @media (min-width: 900px) { .top nav { display: flex; } }
+
+  /* Hero */
+  .hero { padding: 48px 0 64px; overflow-x: clip; }
+  .hero .wrap { display: grid; gap: 48px; align-items: center; }
+  @media (min-width: 900px) { .hero .wrap { grid-template-columns: 1.15fr 0.85fr; } .hero { padding: 80px 0 96px; } }
+  .hero-intro { font-weight: 600; color: var(--muted); font-size: 17px; }
+  .worries { list-style: none; margin: 16px 0 0; padding: 0; counter-reset: w; }
+  .worries li {
+    font-family: var(--display);
+    font-size: clamp(28px, 4.8vw, 44px);
+    line-height: 1.22;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .worries li:first-child { border-top: 1px solid var(--rule); }
+  .hero-close { margin-top: 24px; font-size: 19px; max-width: 30em; }
+  .hero-close strong { font-weight: 700; }
+  .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+
+  /* The bill slip */
+  .slip {
+    position: relative;
+    background: var(--sheet);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: 28px 24px 24px;
+    box-shadow: 0 1px 0 var(--rule), 0 18px 40px -24px rgba(19, 41, 58, .35);
+    font-variant-numeric: tabular-nums;
+  }
+  .slip::before, .slip::after {
+    content: ""; position: absolute; left: 0; right: 0; height: 10px;
+    background: radial-gradient(circle at 6px 0, var(--paper) 5px, transparent 5.5px) 0 0 / 12px 10px repeat-x;
+  }
+  .slip::before { top: -1px; }
+  .slip::after { bottom: -1px; transform: rotate(180deg); }
+  .slip-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding-bottom: 12px; border-bottom: 2px solid var(--ink); }
+  .slip-title { font-family: var(--display); font-size: 24px; }
+  .slip-meta { font-size: 13px; color: var(--muted); }
+  .slip-rows { list-style: none; margin: 0; padding: 0; }
+  .slip-rows li { display: flex; justify-content: space-between; gap: 12px; padding: 12px 0; border-bottom: 1px dashed var(--rule); }
+  .slip-rows .blank { color: var(--muted); min-width: 7.5em; text-align: right; border-bottom: 1px solid var(--ink); line-height: 1.3; }
+  .slip-total { display: flex; justify-content: space-between; padding-top: 14px; font-weight: 700; }
+  .slip-note { margin-top: 18px; font-size: 14px; color: var(--muted); max-width: min(22em, calc(100% - 100px)); }
+
+  .stamp {
+    position: absolute; right: 18px; bottom: 54px;
+    width: 104px; height: 104px; border-radius: 50%;
+    border: 3px solid var(--seal); color: var(--seal);
+    display: grid; place-items: center; text-align: center;
+    font-family: var(--display); font-size: 22px; line-height: 1.05;
+    transform: rotate(-12deg);
+    background: rgba(255,255,255,.6);
+    box-shadow: inset 0 0 0 4px var(--sheet), inset 0 0 0 5px var(--seal);
+    pointer-events: none;
+  }
+  .stamp--corner { right: -14px; bottom: -34px; }
+
+  /* Store photo */
+  .store-photo { margin: 0; position: relative; }
+  .store-photo img { width: 100%; height: clamp(240px, 42vw, 560px); object-fit: cover; object-position: 72% 20%; }
+  .store-photo figcaption { display: none; }
+  @media (min-width: 900px) {
+    .store-photo figcaption {
+      display: block; position: absolute; top: 50%; transform: translateY(-50%);
+      left: max(32px, calc((100% - var(--max)) / 2 + 32px)); width: min(26%, 300px);
+      font-family: var(--display); font-size: clamp(24px, 2.4vw, 32px); line-height: 1.4; color: var(--ink);
+    }
+  }
+
+  /* Sections */
+  section { padding: 72px 0; }
+  @media (min-width: 900px) { section { padding: 104px 0; } }
+  .band { background: var(--band); }
+  .ink-band { background: var(--ink); color: var(--paper); }
+  .ink-band .lede { color: #B8C6CB; }
+  .sec-head { margin-bottom: 40px; }
+
+  /* Concerns */
+  .concerns { display: grid; gap: 0; border-top: 2px solid var(--ink); }
+  @media (min-width: 720px) { .concerns { grid-template-columns: 1fr 1fr; } }
+  .concern { padding: 24px 0; border-bottom: 1px solid var(--rule); }
+  @media (min-width: 720px) { .concern:nth-child(odd) { padding-right: 32px; border-right: 1px solid var(--rule); } .concern:nth-child(even) { padding-left: 32px; } }
+  .concern q { display: block; font-family: var(--display); font-size: 26px; line-height: 1.3; quotes: "“" "”"; }
+  .concern p { color: var(--muted); margin-top: 8px; }
+
+  /* Services */
+  .service { display: grid; gap: 12px 48px; padding: 32px 0; border-top: 1px solid var(--rule); }
+  .service:last-child { border-bottom: 1px solid var(--rule); }
+  @media (min-width: 900px) { .service { grid-template-columns: 340px 1fr; } }
+  .service h3 { font-size: 30px; }
+  .service .what { color: var(--muted); margin-top: 6px; }
+  .service ul { margin: 0; padding-left: 1.1em; }
+  .service li + li { margin-top: 6px; }
+  .service .fine { margin-top: 14px; font-size: 15px; color: var(--muted); }
+
+  /* Opening setup */
+  .setup { display: grid; gap: 40px; }
+  @media (min-width: 900px) { .setup { grid-template-columns: 1fr 1fr; align-items: start; } }
+  .checklist { list-style: none; margin: 0; padding: 0; border-top: 1px solid #3A5262; }
+  .checklist li { display: grid; grid-template-columns: 28px 1fr; gap: 12px; padding: 14px 0; border-bottom: 1px solid #3A5262; }
+  .checklist .box { width: 22px; height: 22px; border: 2px solid var(--paper); border-radius: 3px; margin-top: 4px; }
+  .checklist b { font-weight: 600; }
+  .checklist span { display: block; color: #B8C6CB; font-size: 15px; }
+
+  /* Steps */
+  .steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; counter-reset: step; }
+  @media (min-width: 900px) { .steps { grid-template-columns: repeat(4, 1fr); } }
+  .steps li { counter-increment: step; padding: 24px 0; border-top: 2px solid var(--ink); }
+  @media (min-width: 900px) { .steps li { padding: 24px 24px 0 0; } }
+  .steps li::before { content: counter(step); display: block; font-family: var(--display); font-size: 48px; line-height: 1; margin-bottom: 12px; }
+  .steps h3 { font-size: 24px; }
+  .steps p { color: var(--muted); margin-top: 6px; font-size: 16px; }
+
+  /* Why */
+  .why { display: grid; gap: 32px 48px; }
+  @media (min-width: 900px) { .why { grid-template-columns: repeat(2, 1fr); } }
+  .why h3 { font-size: 26px; }
+  .why p { color: var(--muted); margin-top: 8px; }
+  .alert-offer { margin-top: 48px; padding: 28px; border: 2px solid var(--ink); border-radius: 6px; background: var(--sheet); display: grid; gap: 16px; }
+  @media (min-width: 900px) { .alert-offer { grid-template-columns: 1fr auto; align-items: center; } }
+  .alert-offer strong { font-family: var(--display); font-weight: 400; font-size: 28px; display: block; line-height: 1.3; }
+  .alert-offer p { color: var(--muted); margin-top: 4px; }
+
+  /* FAQ */
+  .faq { border-top: 2px solid var(--ink); max-width: 820px; }
+  .faq details { border-bottom: 1px solid var(--rule); }
+  .faq summary { list-style: none; cursor: pointer; padding: 20px 40px 20px 0; position: relative; font-weight: 600; font-size: 18px; }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary::after { content: "+"; position: absolute; right: 4px; top: 14px; font-family: var(--display); font-size: 30px; line-height: 1; }
+  .faq details[open] summary::after { content: "−"; }
+  .faq .a { padding: 0 0 22px; color: var(--muted); max-width: 40em; }
+
+  /* Check form */
+  .check { display: grid; gap: 40px; }
+  .check > * { min-width: 0; }
+  @media (min-width: 960px) { .check { grid-template-columns: 0.8fr 1.2fr; align-items: start; } .check-aside { position: sticky; top: 24px; } }
+  .check-aside .alt { margin-top: 28px; padding-top: 24px; border-top: 1px solid var(--rule); }
+  .check-aside .alt p { color: var(--muted); margin-bottom: 14px; }
+
+  form.slip { padding: 32px 20px 24px; }
+  @media (min-width: 720px) { form.slip { padding: 36px 32px 28px; } }
+  fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
+  legend { padding: 0; }
+  .group-title { font-family: var(--display); font-size: 22px; margin: 28px 0 4px; }
+  .group-hint { font-size: 14px; color: var(--muted); }
+
+  .item { border-bottom: 1px dashed var(--rule); padding: 14px 0; }
+  .item-main { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .item-main label.use { display: flex; align-items: center; gap: 10px; font-weight: 600; flex: 1 1 140px; cursor: pointer; }
+  .item-main input[type=checkbox] { width: 22px; height: 22px; accent-color: var(--ink); }
+  .fee { display: flex; align-items: center; gap: 6px; flex: 0 1 180px; margin-left: auto; }
+  .fee input { width: 100%; text-align: right; }
+  .fee span { color: var(--muted); font-size: 15px; }
+  .item-more { display: none; margin: 12px 0 0 32px; }
+  .item.on .item-more { display: block; }
+  .item:not(.on) .fee input { background: transparent; }
+
+  .q { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chips + .q { margin-top: 12px; }
+  .chip { position: relative; }
+  .chip input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+  .chip span { display: inline-block; padding: 6px 14px; border: 1px solid var(--rule); border-radius: 999px; font-size: 15px; background: var(--sheet); }
+  .chip input:checked + span { background: var(--ink); color: var(--sheet); border-color: var(--ink); }
+  .chip input:focus-visible + span { outline: 3px solid var(--ink); outline-offset: 2px; }
+  .contract-tip { display: none; margin-top: 10px; font-size: 14px; color: var(--muted); }
+  .contract-tip.show { display: block; }
+
+  input[type=text], input[type=tel], input[type=number], select, textarea {
+    font: 400 17px/1.4 var(--body); color: var(--ink);
+    border: 1px solid var(--rule); border-radius: 4px; padding: 10px 12px; background: var(--sheet); min-height: 46px;
+  }
+  input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 3px solid var(--ink); outline-offset: 0; border-color: var(--ink); }
+
+  .vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .spec-etc { width: 100%; margin: 10px 0 14px; }
+  .chips + .spec-etc { margin-top: 10px; }
+  .item-more > .chips:has(+ .q), .item-more > .count { margin-bottom: 12px; }
+  .photo-tip { margin: 0 0 14px; padding: 14px; border-radius: 4px; background: var(--band); font-size: 15px; }
+  .photo-tip p { margin-bottom: 10px; }
+  .photo-tip .btn { min-height: 44px; font-size: 15px; }
+  .count { display: flex; align-items: center; gap: 8px; }
+  .count input { width: 88px; text-align: right; }
+  .count span { color: var(--muted); }
+
+  .count input.wide { width: 180px; }
+  .box-price { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; margin-bottom: 14px; }
+  @media (min-width: 560px) { .box-price { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  .box-price label { display: grid; gap: 4px; font-size: 14px; color: var(--muted); }
+  .won { display: flex; align-items: center; gap: 6px; color: var(--muted); }
+  .won input { flex: 1 1 0; width: 0; min-width: 0; text-align: right; }
+  .box-total { grid-column: 1 / -1; display: flex; justify-content: space-between; font-weight: 600; font-size: 15px; padding-top: 8px; border-top: 1px dashed var(--rule); font-variant-numeric: tabular-nums; }
+  .upload { margin: 14px 0 6px; padding: 14px; border-radius: 4px; background: var(--band); font-size: 15px; }
+  .upload p { margin-bottom: 10px; }
+  .upload-btn { min-height: 44px; font-size: 15px; }
+  #liquor_receipt:focus-visible + .thumbs, .upload:focus-within .upload-btn { outline: 3px solid var(--ink); outline-offset: 2px; }
+  .thumbs { list-style: none; margin: 10px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .thumbs img { width: 64px; height: 64px; object-fit: cover; border-radius: 4px; border: 1px solid var(--rule); }
+  .thumbs-note { font-size: 14px; color: var(--muted); }
+  #liquorRows .item-more { margin-left: 32px; }
+  @media (max-width: 479px) { #liquorRows .item-more { margin-left: 0; } }
+
+  .multi { margin-top: 24px; }
+  .multi-title { font-family: var(--display); font-size: 22px; }
+  .multi-hint { font-size: 14px; color: var(--muted); }
+  .rows { border-top: 1px dashed var(--rule); margin-top: 8px; }
+  .row .item-main { gap: 10px; }
+  .row-name { display: flex; gap: 8px; flex: 1 1 200px; flex-wrap: wrap; min-width: 0; max-width: 100%; }
+  .row-name select, .row-name input { flex: 1 1 140px; min-width: 0; }
+  .row .item-more { margin-left: 0; }
+  .remove { background: none; border: 0; color: var(--muted); font: 500 14px/1 var(--body); padding: 10px 4px; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+  .remove:hover { color: var(--ink); }
+  .add { margin-top: 12px; width: 100%; min-height: 46px; border: 1.5px dashed var(--muted); border-radius: 4px; background: transparent; color: var(--ink); font: 600 16px/1 var(--body); cursor: pointer; }
+  .add:hover { border-color: var(--ink); background: var(--paper); }
+
+  .sum { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 16px 0; border-top: 2px solid var(--ink); margin-top: 8px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .sum output { font-size: 22px; }
+  .sum-hint { font-size: 14px; color: var(--muted); font-weight: 400; margin-top: -8px; }
+
+  .extras { display: grid; gap: 10px; margin-top: 8px; }
+  .extras label { display: flex; gap: 10px; align-items: flex-start; cursor: pointer; }
+  .extras input { width: 20px; height: 20px; margin-top: 4px; accent-color: var(--ink); flex: none; }
+
+  .fields { display: grid; gap: 14px; margin-top: 12px; }
+  @media (min-width: 720px) { .fields { grid-template-columns: 1fr 1fr; } .fields .full { grid-column: 1 / -1; } }
+  .field label { display: block; font-size: 15px; font-weight: 600; margin-bottom: 6px; }
+  .field input, .field select, .field textarea { width: 100%; }
+  .req { color: var(--seal); }
+  .consent { margin-top: 18px; font-size: 15px; display: flex; gap: 10px; align-items: flex-start; }
+  .consent input { width: 20px; height: 20px; margin-top: 3px; accent-color: var(--ink); flex: none; }
+  .error { color: var(--seal); font-size: 15px; margin-top: 12px; min-height: 1.5em; }
+  .submit { width: 100%; margin-top: 8px; }
+
+  .done { display: none; padding: 104px 0 4px; }
+  form.sent .form-body { display: none; }
+  form.sent .done { display: block; }
+  .done h3 { font-size: 30px; }
+  .done p { color: var(--muted); margin-top: 8px; max-width: 30em; }
+  form .stamp { display: none; top: 20px; bottom: auto; right: 20px; }
+  form.sent .stamp { display: grid; animation: stamp .45s cubic-bezier(.2, 1.6, .4, 1) both; }
+  @keyframes stamp {
+    0% { opacity: 0; transform: rotate(-12deg) scale(1.8); }
+    100% { opacity: 1; transform: rotate(-12deg) scale(1); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    form.sent .stamp { animation: none; }
+  }
+
+  /* Policy fund check */
+  .lede strong.ink { color: var(--ink); font-weight: 700; }
+  .lede-strong { margin-top: 12px; max-width: 34em; font-weight: 700; color: var(--ink); }
+  .qs { display: grid; gap: 14px; margin-top: 10px; }
+  .fq[hidden] { display: none; }
+  .fq .q { margin-bottom: 6px; }
+  .fund-result { margin-top: 28px; padding-top: 24px; border-top: 2px solid var(--ink); }
+  .fund-result:focus { outline: none; }
+  .fund-notice { font-size: 14px; color: var(--muted); padding: 12px 14px; background: var(--band); border-radius: 4px; }
+  .fund-summary { margin-top: 12px; font-size: 15px; }
+  .fund-summary b { margin-right: 8px; }
+  .fund-block { margin-top: 12px; padding: 12px 14px; border: 2px solid var(--seal); border-radius: 4px; font-size: 15px; display: grid; gap: 6px; }
+  .fund-list { list-style: none; margin: 16px 0 0; padding: 0; border-top: 1px solid var(--rule); }
+  .fund { padding: 18px 0; border-bottom: 1px dashed var(--rule); }
+  .fund-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap; }
+  .fund h3 { font-size: 22px; }
+  .fund-org { font-size: 14px; color: var(--muted); }
+  .fit { flex: none; font-size: 14px; font-weight: 700; padding: 4px 12px; border-radius: 999px; border: 1.5px solid var(--ink); }
+  .fit--high { background: var(--ink); color: var(--sheet); }
+  .fit--mid { background: var(--sheet); color: var(--ink); }
+  .fit--low { border-color: var(--rule); color: var(--muted); }
+  .fund-k { font-size: 14px; font-weight: 600; margin-top: 10px; }
+  .fund ul { margin: 4px 0 0; padding-left: 1.1em; font-size: 15px; color: var(--muted); }
+  .fund-link { display: inline-block; margin-top: 10px; font-size: 15px; font-weight: 600; text-underline-offset: 3px; }
+  .fund-empty { color: var(--muted); }
+  .fund-legend { list-style: none; margin: 14px 0 0; padding: 0; font-size: 13px; color: var(--muted); display: grid; gap: 2px; }
+  .fund-legend b { color: var(--ink); margin-right: 6px; }
+  .fund-result + .error, .fund-result .submit { margin-top: 8px; }
+
+  /* Footer */
+  footer { background: var(--ink); color: #B8C6CB; padding: 48px 0 120px; font-size: 14px; line-height: 1.8; }
+  @media (min-width: 900px) { footer { padding-bottom: 48px; } }
+  footer .logo { margin-bottom: 16px; }
+  footer .logo img { filter: brightness(0) invert(1); }
+  footer dl { display: grid; grid-template-columns: max-content 1fr; gap: 2px 16px; margin: 0; }
+  footer dt { color: #8FA2A9; }
+  footer dd { margin: 0; }
+  footer .links { margin-top: 20px; display: flex; gap: 20px; flex-wrap: wrap; }
+  footer .links a { color: var(--paper); font-weight: 600; }
+  footer .legal { margin-top: 20px; color: #8FA2A9; max-width: 48em; }
+
+  /* Mobile action bar */
+  .bar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 10; display: grid; grid-template-columns: 1fr 1.4fr; gap: 8px; padding: 10px var(--gutter) calc(10px + env(safe-area-inset-bottom)); background: var(--paper); border-top: 1px solid var(--rule); }
+  .bar .btn { min-height: 48px; padding: 0 12px; }
+  @media (min-width: 900px) { .bar { display: none; } }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="#"><img src="assets/td-korea-logo.png" width="150" height="40" alt="TD KOREA 티디코리아"><small>매장 고정비·지원금 확인</small></a>
+    <nav aria-label="주요 메뉴">
+      <a href="#services">서비스</a>
+      <a href="#opening">개업 준비</a>
+      <a href="#process">진행 과정</a>
+      <a href="#faq">자주 묻는 질문</a>
+      <a href="#check">고정비 체크</a>
+      <a href="#fund">정책자금 체크</a>
+    </nav>
+    <a class="top-call" href="tel:0220390853">02-2039-0853</a>
+  </div>
+</header>
+
+<main>
+
+<!-- 1. 메인 -->
+<section class="hero" aria-labelledby="hero-title">
+  <div class="wrap">
+    <div>
+      <p class="hero-intro" id="hero-title">장사하면서 한 번쯤 해보셨을 고민, 세 가지</p>
+      <ol class="worries">
+        <li>매달 나가는 고정비, 더 줄일 수는 없을까?</li>
+        <li>우리 가게도 정책자금을 받을 수 있을까?</li>
+        <li>갚지 않아도 되는 정부지원금, 나도 해당될까?</li>
+      </ol>
+      <p class="hero-close">“안 될 거야” 하고 넘기기 전에, 먼저 확인해 보세요. <strong>티디코리아가 무료로 함께 확인해 드립니다.</strong></p>
+      <div class="hero-actions">
+        <a class="btn btn--kakao todo" href="#" data-kakao>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 3C6.5 3 2 6.6 2 11c0 2.8 1.9 5.3 4.7 6.7l-1 3.6c-.1.3.3.6.6.4l4.2-2.8c.5.1 1 .1 1.5.1 5.5 0 10-3.6 10-8S17.5 3 12 3z"/></svg>
+          무료로 확인받기
+        </a>
+        <a class="btn" href="tel:0220390853">전화 상담</a>
+        <a class="btn btn--ink" href="#check">고정비 체크</a>
+        <a class="btn btn--ink" href="#fund">정책자금 체크</a>
+      </div>
+    </div>
+
+    <div class="slip" aria-hidden="true">
+      <div class="slip-head">
+        <span class="slip-title">우리 가게 고정비</span>
+        <span class="slip-meta">매달 빠져나가는 것들</span>
+      </div>
+      <ul class="slip-rows">
+        <li><span>카드단말기</span><span class="blank">월 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;원</span></li>
+        <li><span>POS</span><span class="blank">월 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;원</span></li>
+        <li><span>인터넷</span><span class="blank">월 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;원</span></li>
+        <li><span>CCTV</span><span class="blank">월 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;원</span></li>
+        <li><span>렌탈 (정수기·공기청정기 등)</span><span class="blank">월 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;원</span></li>
+        <li><span>기타 고정비</span><span class="blank">월 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;원</span></li>
+      </ul>
+      <div class="slip-total"><span>합계</span><span>얼마나 내고 계세요?</span></div>
+      <p class="slip-note">사용 중인 제품 사진만 보내주셔도 항목별로 확인해 드립니다.</p>
+      <div class="stamp stamp--corner">무료<br>확인</div>
+    </div>
+  </div>
+</section>
+
+<!-- 매장 사진 -->
+<figure class="store-photo">
+  <img src="assets/td-korea-store.jpg" width="1672" height="941" alt="카운터 위 POS와 벽면 인터넷 공유기, 공기청정기, 정수기가 놓인 카페 매장">
+  <figcaption>POS, 인터넷, 정수기, 공기청정기. 매달 나가는 비용을 한 번에 봅니다.</figcaption>
+</figure>
+
+<!-- 2. 사장님 고민 -->
+<section class="band" aria-labelledby="concerns-title">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2 id="concerns-title">사장님들이 가장 많이 물어보시는 것</h2>
+    </div>
+    <div class="concerns">
+      <div class="concern">
+        <q>단말기, 인터넷, CCTV… 문제 생길 때마다 업체마다 따로 연락해야 하나?</q>
+        <p>업체에서 관리하기 귀찮은 부분을 저희가 대신 해드립니다. 약정 관리, 영수증 용지, AS 접수까지 여기저기 연락하지 말고 한 곳에서 관리하세요.</p>
+      </div>
+      <div class="concern">
+        <q>약정이 남았는데, 지금 바꾸면 손해 아닌가?</q>
+        <p>위약금이 줄어드는 비용보다 크면 지금 바꾸지 않습니다. 약정이 끝나는 시점에 맞춰 교체 계획을 세워 드립니다.</p>
+      </div>
+      <div class="concern">
+        <q>정책자금이나 지원금, 나랑은 상관없는 얘기 아닐까?</q>
+        <p>업종, 업력, 지역에 따라 해당되는 공고가 다릅니다. 지금 열려 있는 공고 중 확인해 볼 만한 것을 정리해 드립니다.</p>
+      </div>
+      <div class="concern">
+        <q>개업 준비할 게 너무 많은데 어디서부터 해야 하지?</q>
+        <p>단말기, POS, 인터넷, CCTV 설치 일정을 한 번에 맞추고, 개업 때 확인할 지원사업까지 같이 챙겨 드립니다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 3. 서비스 3묶음 -->
+<section id="services" aria-labelledby="services-title">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2 id="services-title">티디코리아가 하는 일</h2>
+      <p class="lede">정해진 요금표를 내밀지 않습니다. 매장 상황에 맞춰 항목을 다시 조합해, 지금보다 비용이 낮아지는 방향으로 설계합니다.</p>
+    </div>
+
+    <div class="service">
+      <div>
+        <h3>매장 고정비 절감</h3>
+        <p class="what">카드단말기·POS·키오스크·인터넷·CCTV·렌탈</p>
+      </div>
+      <div>
+        <ul>
+          <li>지금 쓰는 항목과 월 요금, 약정 상태를 한 장으로 정리</li>
+          <li>바꿀 항목과 그대로 둘 항목을 나눠 매장에 맞는 조합 설계</li>
+          <li>통신사·단말기 업체가 달라도 한 번에 비교해 안내</li>
+          <li>설치 후 첫 청구서가 안내한 대로 나왔는지까지 확인</li>
+        </ul>
+        <p class="fine">줄어드는 금액은 매장마다 다릅니다. 확인 후 실제 조합으로 안내해 드립니다.</p>
+      </div>
+    </div>
+
+    <div class="service">
+      <div>
+        <h3>정부지원금·정책자금 코칭</h3>
+        <p class="what">공고 정리와 신청 준비</p>
+      </div>
+      <div>
+        <ul>
+          <li>업종·업력·지역 기준으로 확인해 볼 만한 공고 정리</li>
+          <li>공고별 자격 요건과 준비 서류 체크리스트 안내</li>
+          <li>신청서 작성 전에 빠진 부분이 없는지 함께 점검</li>
+          <li>매달 새로 열리는 소상공인 지원사업 소식 발송</li>
+        </ul>
+        <p class="fine">신청은 사장님 명의로 직접 하시며, 선정과 지급 여부는 각 기관의 심사로 결정됩니다.</p>
+        <p class="fine"><a href="#fund">정책자금 신청 가능 여부 체크하기</a></p>
+      </div>
+    </div>
+
+    <div class="service">
+      <div>
+        <h3>사업 파트너 연결</h3>
+        <p class="what">주류 거래처와 매장 운영에 필요한 전문가</p>
+      </div>
+      <div>
+        <ul>
+          <li><b>주류 거래처 연결</b>: 음식점·주점 개업이나 거래처를 바꿀 때 매장에 맞는 주류업체 연결</li>
+          <li>상담 중 나온 고민에 맞는 곳으로 바로 연결</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. 개업 원스톱 세팅 -->
+<section id="opening" class="ink-band" aria-labelledby="opening-title">
+  <div class="wrap setup">
+    <div>
+      <h2 id="opening-title">개업 준비, 한 곳에서 맞춥니다</h2>
+      <p class="lede">설치 업체를 하나씩 부르면 날짜 맞추는 것부터 일입니다. 오픈 날짜만 알려주시면 순서와 일정을 맞춰 드립니다.</p>
+      <div class="hero-actions">
+        <a class="btn btn--kakao todo" href="#" data-kakao>카카오톡으로 개업 상담</a>
+      </div>
+    </div>
+    <ul class="checklist">
+      <li><i class="box" aria-hidden="true"></i><div><b>인터넷</b><span>매장 위치에서 가능한 통신사와 결합 조건 비교</span></div></li>
+      <li><i class="box" aria-hidden="true"></i><div><b>카드단말기</b><span>매장 형태에 맞는 유선·무선 단말기 선택</span></div></li>
+      <li><i class="box" aria-hidden="true"></i><div><b>POS·키오스크</b><span>업종별로 필요한 기능 기준으로 선택</span></div></li>
+      <li><i class="box" aria-hidden="true"></i><div><b>CCTV</b><span>매장 구조에 맞춘 대수와 위치 설계</span></div></li>
+      <li><i class="box" aria-hidden="true"></i><div><b>렌탈</b><span>정수기 등 필요한 렌탈 품목 정리</span></div></li>
+      <li><i class="box" aria-hidden="true"></i><div><b>주류 거래처</b><span>음식점·주점이라면 거래할 주류업체 연결</span></div></li>
+      <li><i class="box" aria-hidden="true"></i><div><b>개업 지원사업</b><span>창업 시점에 확인할 수 있는 공고 정리</span></div></li>
+    </ul>
+  </div>
+</section>
+
+<!-- 5. 진행 과정 -->
+<section id="process" aria-labelledby="process-title">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2 id="process-title">이렇게 진행됩니다</h2>
+    </div>
+    <ol class="steps">
+      <li><h3>자료 보내기</h3><p>아래 고정비 체크를 작성하시거나, 사용 중인 제품 사진을 찍어 카카오톡으로 보내주세요.</p></li>
+      <li><h3>조합 설계</h3><p>받은 자료로 약정 상태를 확인하고, 매장에 맞는 조합을 설계합니다.</p></li>
+      <li><h3>상담</h3><p>전화나 방문으로 설계한 내용을 설명드립니다. 결정은 들어보신 뒤에 하시면 됩니다.</p></li>
+      <li><h3>설치와 확인</h3><p>설치 일정을 맞추고, 첫 청구서가 안내한 대로 나왔는지 함께 확인합니다.</p></li>
+    </ol>
+  </div>
+</section>
+
+<!-- 6. 왜 티디코리아 -->
+<section class="band" aria-labelledby="why-title">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2 id="why-title">티디코리아에 맡기는 이유</h2>
+    </div>
+    <div class="why">
+      <div>
+        <h3>요금표가 아니라 설계로 안내합니다</h3>
+        <p>같은 업종이어도 매장마다 쓰는 항목과 약정이 다릅니다. 정해진 상품을 권하지 않고, 지금 쓰는 것에서 출발해 조합을 짭니다.</p>
+      </div>
+      <div>
+        <h3>지금 바꾸면 손해일 때는 그렇게 말씀드립니다</h3>
+        <p>약정이 남아 위약금이 더 크다면 교체를 미루고, 만료 시점에 맞춘 계획을 드립니다.</p>
+      </div>
+      <div>
+        <h3>설치하고 끝내지 않습니다</h3>
+        <p>설치 후 첫 청구서까지 확인합니다. 안내와 다르게 나온 부분이 있으면 바로 잡아 드립니다.</p>
+      </div>
+      <div>
+        <h3>고정비와 지원금을 한 번에 봅니다</h3>
+        <p>매장 비용을 정리하다 보면 해당될 만한 지원사업도 보입니다. 따로 알아보실 필요 없이 함께 확인해 드립니다.</p>
+      </div>
+    </div>
+
+    <div class="alert-offer">
+      <div>
+        <strong>약정 끝나는 날, 저희가 기억해 드릴게요.</strong>
+        <p>단말기·인터넷 약정 만료 한 달 전에 카카오톡으로 알려드립니다. 지금 바꿀 계획이 없어도 신청하실 수 있습니다.</p>
+      </div>
+      <a class="btn btn--ink" href="#check" data-alert>만료 알림 신청</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- 7. FAQ -->
+<section id="faq" aria-labelledby="faq-title">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2 id="faq-title">자주 묻는 질문</h2>
+    </div>
+    <div class="faq">
+      <details>
+        <summary>확인받는 데 비용이 드나요?</summary>
+        <div class="a">매장 고정비 확인과 조합 설계, 정책자금 사전 체크와 첫 상담은 무료입니다. 정책자금 신청 준비를 돕는 코칭은 정해진 컨설팅 비용이 있으며, 시작 전에 금액을 먼저 안내해 드립니다. 성공보수는 받지 않고, 상담을 받았다고 계약하셔야 하는 것도 아닙니다.</div>
+      </details>
+      <details>
+        <summary>고정비가 얼마나 줄어드는지 미리 알 수 있나요?</summary>
+        <div class="a">매장마다 쓰는 항목과 약정이 달라서 자료를 보기 전에는 말씀드리기 어렵습니다. 사용 중인 항목과 요금을 확인한 뒤 실제 조합으로 안내해 드립니다.</div>
+      </details>
+      <details>
+        <summary>약정이 언제 끝나는지 모르겠어요.</summary>
+        <div class="a">대부분 정확한 날짜를 기억하지 못하십니다. 통신사 고객센터나 앱, 단말기 업체에서 확인하는 방법을 알려드리고, 원하시면 함께 확인해 드립니다.</div>
+      </details>
+      <details>
+        <summary>정책자금이나 지원금을 대신 받아주시나요?</summary>
+        <div class="a">신청은 사장님 명의로 직접 하셔야 하고, 선정 여부는 각 기관이 심사로 결정합니다. 티디코리아는 확인해 볼 만한 공고를 정리하고, 요건과 서류 준비를 함께 점검해 드립니다.</div>
+      </details>
+      <details>
+        <summary>지금 쓰는 통신사나 업체와 달라도 되나요?</summary>
+        <div class="a">네. 통신사와 단말기 업체가 달라도 한 번에 비교해 안내해 드립니다.</div>
+      </details>
+      <details>
+        <summary>어느 지역까지 방문하나요?</summary>
+        <div class="a todo">방문 가능 지역을 적어 주세요. 그 외 지역은 전화와 카카오톡으로 상담합니다.</div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- 8. 고정비 체크 + 상담 신청 -->
+<section id="check" class="band" aria-labelledby="check-title">
+  <div class="wrap check">
+    <div class="check-aside">
+      <h2 id="check-title">내 매장 고정비 체크</h2>
+      <p class="lede">쓰고 있는 항목에 체크하고 월 요금을 적어 주세요. 정확하지 않아도 괜찮습니다. 확인 후 연락드립니다.</p>
+      <div class="alt">
+        <p>POS 사양을 모르시겠다면 사용 중인 POS를 사진으로 찍어 카카오톡으로 보내주세요. 모니터, 프린터처럼 연결된 장비가 함께 보이게 찍어 주시면 됩니다.</p>
+        <a class="btn btn--kakao todo" href="#" data-kakao>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 3C6.5 3 2 6.6 2 11c0 2.8 1.9 5.3 4.7 6.7l-1 3.6c-.1.3.3.6.6.4l4.2-2.8c.5.1 1 .1 1.5.1 5.5 0 10-3.6 10-8S17.5 3 12 3z"/></svg>
+          POS 사진 보내기
+        </a>
+      </div>
+    </div>
+
+    <form class="slip" id="checkForm" novalidate>
+      <div class="stamp" aria-hidden="true">접수</div>
+
+      <div class="form-body">
+        <div class="slip-head">
+          <span class="slip-title">우리 가게 고정비</span>
+          <span class="slip-meta">해당 항목만 체크</span>
+        </div>
+
+        <fieldset id="items">
+          <legend class="vh">사용 중인 항목과 월 요금</legend>
+        </fieldset>
+
+        <fieldset class="multi">
+          <legend class="multi-title">렌탈 제품</legend>
+          <p class="multi-hint">제품마다 약정이 다를 수 있어요. 하나씩 따로 적어 주세요.</p>
+          <div class="rows" id="rentalRows"></div>
+          <button type="button" class="add" id="addRental">+ 렌탈 제품 추가</button>
+        </fieldset>
+
+        <fieldset class="multi">
+          <legend class="multi-title">기타 고정비</legend>
+          <p class="multi-hint">위에 없는 것 중 매달 고정으로 나가는 비용을 직접 적어 주세요.</p>
+          <div class="rows" id="otherRows"></div>
+          <button type="button" class="add" id="addOther">+ 기타 비용 추가</button>
+        </fieldset>
+
+        <fieldset class="multi" id="liquor">
+          <legend class="multi-title">주류 거래처</legend>
+          <p class="multi-hint">음식점·주점이라면 적어 주세요. 주류 매입은 위 고정비 합계에 넣지 않습니다.</p>
+          <div class="rows" id="liquorRows"></div>
+        </fieldset>
+
+        <div class="sum"><span>입력하신 월 요금 합계</span><output id="sum" aria-live="polite">0원</output></div>
+        <p class="sum-hint">지금 내고 계신 금액입니다. 줄어드는 금액은 확인 후 안내해 드립니다.</p>
+
+        <p class="group-title">함께 확인받고 싶은 것</p>
+        <div class="extras">
+          <label><input type="checkbox" name="extra" value="지원금">정부지원금·정책자금 해당 여부</label>
+          <label><input type="checkbox" name="extra" value="개업">개업 준비 (설치 일정 맞추기)</label>
+          <label><input type="checkbox" name="extra" value="만료알림" id="alertOpt">약정 만료 한 달 전 카카오톡 알림</label>
+        </div>
+
+        <p class="group-title">연락받으실 곳</p>
+        <div class="fields">
+          <div class="field"><label for="f-name">성함 <span class="req">*</span></label><input id="f-name" name="name" type="text" autocomplete="name" required></div>
+          <div class="field"><label for="f-tel">연락처 <span class="req">*</span></label><input id="f-tel" name="tel" type="tel" inputmode="tel" autocomplete="tel" placeholder="010-1234-5678" required></div>
+          <div class="field"><label for="f-shop">상호</label><input id="f-shop" name="shop" type="text" autocomplete="organization"></div>
+          <div class="field"><label for="f-type">업종</label>
+            <select id="f-type" name="type">
+              <option value="">선택해 주세요</option>
+              <option>음식점·카페</option><option>소매·편의점</option><option>미용·뷰티</option>
+              <option>학원·교육</option><option>병원·약국</option><option>개업 준비 중</option><option>기타</option>
+            </select>
+          </div>
+          <div class="field full"><label for="f-area">매장 지역</label><input id="f-area" name="area" type="text" placeholder="예: ○○구 ○○동"></div>
+          <div class="field full"><label for="f-memo">더 알려주실 내용</label><textarea id="f-memo" name="memo" rows="3"></textarea></div>
+        </div>
+
+        <label class="consent"><input type="checkbox" id="f-consent" required>
+          <span>상담을 위한 개인정보 수집·이용에 동의합니다. (성함, 연락처, 매장 정보 / 상담 목적 / 상담 종료 후 <span class="todo">○년</span> 보관) <a href="#privacy">자세히 보기</a></span>
+        </label>
+        <p class="error" id="formError" role="alert"></p>
+        <button class="btn btn--ink submit" type="submit">무료로 확인받기</button>
+      </div>
+
+      <div class="done" tabindex="-1" id="done">
+        <h3>접수됐습니다</h3>
+        <p>보내주신 내용을 확인한 뒤 남겨주신 번호로 연락드립니다.</p>
+        <div id="donePos" hidden>
+          <p>POS 사양을 모르겠다고 하셨는데, 사용 중인 POS 사진을 카카오톡으로 보내주시면 더 정확하게 확인할 수 있습니다.</p>
+          <div class="hero-actions">
+            <a class="btn btn--kakao todo" href="#" data-kakao>POS 사진 보내기</a>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</section>
+
+<!-- 8-2. 정책자금 신청 가능 여부 체크 -->
+<section id="fund" aria-labelledby="fund-title">
+  <div class="wrap check">
+    <div class="check-aside">
+      <h2 id="fund-title">정책자금 신청 가능 여부 체크</h2>
+      <p class="lede">사업장 정보와 조건을 고르면, 입력하신 내용 기준으로 확인해 볼 만한 자금과 요건 부합도를 바로 보여드립니다.</p>
+      <p class="lede-strong">결과를 보시고 직접 신청하실 수 있다면, 편하게 바로 신청하셔도 괜찮습니다.</p>
+      <p class="lede">준비가 막막하거나 도움이 필요하시면 상담을 신청해 주세요. <strong class="ink">티디코리아는 정해진 컨설팅 비용 외에 성공보수를 받지 않으며, 보험 가입 같은 금융상품도 권하지 않습니다.</strong></p>
+      <div class="alt">
+        <p>신용점수는 조회하지 않습니다. 알고 계신 범위에서 골라 주세요.</p>
+        <p>결과는 보편적인 내용을 바탕으로 공고 요건과 비교한 참고 자료입니다. 좀 더 정확한 내용이 궁금하시면 상담 신청을 진행해 주십시오. 심사와 승인은 각 운영기관이 결정하며, 신청과 접수는 대표님이 직접 하실 수 있도록 도와드립니다.</p>
+      </div>
+    </div>
+
+    <form class="slip" id="fundForm" novalidate>
+      <div class="stamp" aria-hidden="true">접수</div>
+
+      <div class="form-body">
+        <div class="slip-head">
+          <span class="slip-title">정책자금 사전 체크</span>
+          <span class="slip-meta">해당하는 것을 골라 주세요</span>
+        </div>
+
+        <p class="group-title">기본 정보</p>
+        <div class="qs" id="fundBasic"></div>
+
+        <p class="group-title">신청 조건</p>
+        <div class="qs" id="fundCond"></div>
+
+        <p class="error" id="fundError" role="alert"></p>
+        <button class="btn btn--ink submit" type="button" id="fundRun">확인해 볼 자금 보기</button>
+
+        <div class="fund-result" id="fundResult" hidden tabindex="-1">
+          <p class="fund-notice" id="fundNotice"></p>
+          <div class="fund-summary" id="fundSummary"></div>
+          <div class="fund-block" id="fundBlock" hidden></div>
+          <ul class="fund-list" id="fundList"></ul>
+          <ul class="fund-legend">
+            <li><b>높음</b> 입력하신 정보 기준으로 주요 요건을 충족합니다.</li>
+            <li><b>보통</b> 주요 요건은 충족하나 확인이 필요한 사항이 있습니다.</li>
+            <li><b>낮음</b> 일부 요건이 충족되지 않거나 확인되지 않았습니다.</li>
+            <li>요건 부합도는 공고 요건과의 비교 결과이며, 심사 통과 가능성을 뜻하지 않습니다. 자금 이름과 요건은 해마다 공고에 따라 바뀔 수 있습니다.</li>
+          </ul>
+
+          <p class="group-title">이 결과로 상담 받기</p>
+          <p class="group-hint">올해 공고 기준으로 요건을 다시 확인하고, 필요한 서류와 준비 방법을 안내해 드립니다.</p>
+          <div class="fields">
+            <div class="field"><label for="g-name">성함 <span class="req">*</span></label><input id="g-name" name="name" type="text" autocomplete="name" required></div>
+            <div class="field"><label for="g-tel">연락처 <span class="req">*</span></label><input id="g-tel" name="tel" type="tel" inputmode="tel" autocomplete="tel" placeholder="010-1234-5678" required></div>
+            <div class="field full"><label for="g-memo">더 알려주실 내용</label><textarea id="g-memo" name="memo" rows="3" placeholder="예: 필요한 금액과 시기, 이미 알아본 자금"></textarea></div>
+          </div>
+          <label class="consent"><input type="checkbox" id="g-consent" required>
+            <span>상담을 위한 개인정보 수집·이용에 동의합니다. (성함, 연락처, 입력하신 사업장 정보 / 상담 목적 / 상담 종료 후 <span class="todo">○년</span> 보관) <a href="#privacy">자세히 보기</a></span>
+          </label>
+          <p class="error" id="fundFormError" role="alert"></p>
+          <button class="btn btn--ink submit" type="submit">정책자금 상담 신청</button>
+        </div>
+      </div>
+
+      <div class="done" tabindex="-1" id="fundDone">
+        <h3>접수됐습니다</h3>
+        <p>입력하신 조건과 확인해 볼 자금 목록을 함께 받았습니다. 올해 공고 기준으로 다시 확인한 뒤 남겨주신 번호로 연락드립니다.</p>
+      </div>
+    </form>
+  </div>
+</section>
+
+</main>
+
+<!-- 9. 사업자정보 -->
+<footer>
+  <div class="wrap">
+    <span class="logo"><img src="assets/td-korea-logo.png" width="150" height="40" alt="TD KOREA 티디코리아"></span>
+    <dl>
+      <dt>상호</dt><dd>티디코리아</dd>
+      <dt>대표</dt><dd>구혜선</dd>
+      <dt>사업자등록번호</dt><dd>582-01-02657</dd>
+      <dt>본사</dt><dd>서울특별시 강서구 공항대로 186, 10층 1016호(로뎀타워, 마곡동)</dd>
+      <dt>구리지사</dt><dd>경기 구리시 동구릉로200번길 7, 301·302·303호(동구빌딩, 인창동)</dd>
+      <dt>덕양지사</dt><dd>경기 고양시 덕양구 향동로 218, B-B116호(현대테라타워DMC, 향동동)</dd>
+      <dt>전화</dt><dd><a href="tel:0220390853">02-2039-0853</a></dd>
+      <dt>이메일</dt><dd><a href="mailto:hyj810327@gmail.com">hyj810327@gmail.com</a></dd>
+    </dl>
+    <div class="links">
+      <a href="#privacy" id="privacy">개인정보처리방침</a>
+      <a href="#" data-kakao class="todo">카카오톡 채널</a>
+    </div>
+    <p class="legal">상담에서 안내하는 비용은 매장의 현재 이용 조건과 약정 상태에 따라 달라집니다. 정부지원금·정책자금의 선정과 지급은 각 기관의 심사로 결정되며, 티디코리아는 공고 정리와 신청 준비를 돕습니다.</p>
+  </div>
+</footer>
+
+<div class="bar">
+  <a class="btn" href="tel:0220390853">전화 상담</a>
+  <a class="btn btn--kakao todo" href="#" data-kakao>무료로 확인받기</a>
+</div>
+
+<script>
+  // 카카오톡 채널 주소를 받으면 여기에 넣으세요 (예: https://pf.kakao.com/_xxxxx/chat)
+  const KAKAO_URL = "#";
+  document.querySelectorAll("[data-kakao]").forEach(a => { a.href = KAKAO_URL; });
+
+  const KAKAO_ICON = '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 3C6.5 3 2 6.6 2 11c0 2.8 1.9 5.3 4.7 6.7l-1 3.6c-.1.3.3.6.6.4l4.2-2.8c.5.1 1 .1 1.5.1 5.5 0 10-3.6 10-8S17.5 3 12 3z"/></svg>';
+  const chips = (type, name, values) => values.map(v =>
+    `<label class="chip"><input type="${type}" name="${name}" value="${v}"><span>${v}</span></label>`).join("");
+
+  const CONTRACT_TIPS = {
+    "남아 있음": "위약금과 바꿨을 때 줄어드는 비용을 비교해 안내해 드립니다. 위약금이 더 크면 만료 시점에 맞춰 계획을 세웁니다.",
+    "끝남": "바로 비교해 볼 수 있는 항목입니다.",
+    "잘 모르겠음": "괜찮습니다. 통신사 고객센터·앱이나 해당 업체에서 확인하는 방법을 알려드리고, 원하시면 함께 확인해 드립니다.",
+  };
+  const contractHTML = id => `
+    <p class="q" id="q1_${id}">약정이 남아 있나요?</p>
+    <div class="chips" role="radiogroup" aria-labelledby="q1_${id}">${chips("radio", `contract_${id}`, ["남아 있음", "끝남", "잘 모르겠음"])}</div>
+    <div class="remain" hidden>
+      <p class="q" id="q2_${id}">얼마나 남았나요?</p>
+      <div class="chips" role="radiogroup" aria-labelledby="q2_${id}">${chips("radio", `remain_${id}`, ["6개월 이내", "6개월~1년", "1년 이상"])}</div>
+    </div>
+    <p class="contract-tip"></p>`;
+  function wireContract(el, id) {
+    const remain = el.querySelector(".remain");
+    const tip = el.querySelector(".contract-tip");
+    el.querySelectorAll(`[name="contract_${id}"]`).forEach(r => r.addEventListener("change", () => {
+      remain.hidden = r.value !== "남아 있음";
+      tip.textContent = CONTRACT_TIPS[r.value];
+      tip.classList.add("show");
+    }));
+  }
+  function wireFee(el, fee, onInput) {
+    fee.addEventListener("input", () => {
+      const digits = fee.value.replace(/[^0-9]/g, "");
+      fee.value = digits ? Number(digits).toLocaleString("ko-KR") : "";
+      onInput(!!digits);
+      updateSum();
+    });
+  }
+  const feeHTML = (name, label) => `
+    <div class="fee">
+      <input type="text" inputmode="numeric" name="${name}" data-fee aria-label="${label} 월 요금" placeholder="월 요금">
+      <span>원</span>
+    </div>`;
+
+  // 고정 항목: 카드단말기, POS, 인터넷, CCTV
+  const POS_SPEC = `
+    <p class="q">어떤 구성인가요? (해당하는 것 모두)</p>
+    <div class="chips">${chips("checkbox", "spec_pos", ["기본 세트 (모니터·금전함·멀티패드·프린터)", "듀얼 모니터", "벽면 모니터", "주방 프린터", "테이블오더", "잘 모르겠음"])}</div>
+    <input class="spec-etc" type="text" name="spec_pos_etc" aria-label="그 밖에 연결된 POS 장비" placeholder="그 밖에 연결된 장비 (예: 바코드 스캐너)">
+    <div class="photo-tip" hidden>
+      <p>괜찮습니다. 사용 중인 POS를 사진으로 찍어 카카오톡으로 보내주세요. 연결된 장비가 함께 보이게 찍어 주시면 됩니다.</p>
+      <a class="btn btn--kakao todo" href="${KAKAO_URL}">${KAKAO_ICON}POS 사진 보내기</a>
+    </div>`;
+  const CCTV_SPEC = `
+    <p class="q" id="q_cctv_vendor">어디 제품인가요?</p>
+    <div class="chips" role="radiogroup" aria-labelledby="q_cctv_vendor">${chips("radio", "vendor_cctv", ["통신사 상품 (KT·SK·LG 등)", "사설 업체", "잘 모르겠음"])}</div>
+    <p class="q"><label for="cctv_count">몇 대인가요?</label></p>
+    <div class="count"><input type="number" id="cctv_count" name="count_cctv" min="1" max="99" inputmode="numeric" placeholder="0"><span>대</span></div>`;
+
+  const KIOSK_SPEC = `
+    <p class="q"><label for="kiosk_count">몇 대인가요?</label></p>
+    <div class="count"><input type="number" id="kiosk_count" name="count_kiosk" min="1" max="99" inputmode="numeric" placeholder="0"><span>대</span></div>`;
+
+  // 주류: 참이슬 후레쉬 1박스(20병) 기준 단가
+  const LIQUOR_SPEC = `
+    <p class="q">참이슬 후레쉬 1박스(20병) 기준으로 적어 주세요.</p>
+    <div class="box-price">
+      <label>단가<span class="won"><input type="text" inputmode="numeric" name="liquor_price" data-box placeholder="0">원</span></label>
+      <label>부가세<span class="won"><input type="text" inputmode="numeric" name="liquor_vat" data-box placeholder="0">원</span></label>
+      <label>공병·용기 보증금<span class="won"><input type="text" inputmode="numeric" name="liquor_deposit" data-box placeholder="0">원</span></label>
+      <p class="box-total">1박스 합계 <output id="boxTotal">0원</output></p>
+    </div>
+    <p class="q"><label for="liquor_monthly">주류 매입은 한 달에 얼마 정도인가요?</label></p>
+    <div class="count"><input type="text" id="liquor_monthly" name="liquor_monthly" inputmode="numeric" data-won placeholder="대략적인 금액" class="wide"><span>원</span></div>
+    <p class="q" id="q_liquor_loan">주류대출을 받으셨나요?</p>
+    <div class="chips" role="radiogroup" aria-labelledby="q_liquor_loan">${chips("radio", "liquor_loan", ["받았음", "안 받았음", "잘 모르겠음"])}</div>
+    <p class="q"><label for="fridge_count">지금 거래처에서 냉장고를 몇 대 지원받으셨나요?</label></p>
+    <div class="count"><input type="number" id="fridge_count" name="fridge_count" min="0" max="99" inputmode="numeric" placeholder="0"><span>대</span></div>
+    <div class="upload">
+      <p>단가를 잘 모르시겠다면 주류업체에서 받은 영수증(거래명세서)을 찍어 올려 주세요.</p>
+      <label class="btn upload-btn" for="liquor_receipt">영수증 사진 올리기</label>
+      <input type="file" id="liquor_receipt" name="liquor_receipt" accept="image/*" multiple class="vh">
+      <ul class="thumbs" id="receiptThumbs" aria-live="polite"></ul>
+    </div>`;
+
+  const NET_SPEC = `
+    <p class="q" id="q_net_carrier">어느 통신사인가요?</p>
+    <div class="chips" role="radiogroup" aria-labelledby="q_net_carrier">${chips("radio", "carrier_net", ["KT", "SK브로드밴드", "LG유플러스", "케이블 방송사", "그 밖의 업체", "잘 모르겠음"])}</div>`;
+
+  const ITEMS = [
+    { key: "card", label: "카드단말기" },
+    { key: "pos", label: "POS", spec: POS_SPEC },
+    { key: "kiosk", label: "키오스크", spec: KIOSK_SPEC },
+    { key: "net", label: "인터넷", spec: NET_SPEC },
+    { key: "cctv", label: "CCTV", spec: CCTV_SPEC },
+    { key: "liquor", label: "주류업체와 거래하고 있어요", spec: LIQUOR_SPEC, fee: false, contract: false, into: "liquorRows" },
+  ];
+
+  ITEMS.forEach(({ key, label, spec = "", fee = true, contract = true, into = "items" }) => {
+    const el = document.createElement("div");
+    el.className = "item";
+    el.innerHTML = `
+      <div class="item-main">
+        <label class="use"><input type="checkbox" name="use_${key}">${label}</label>
+        ${fee ? feeHTML(`fee_${key}`, label) : ""}
+      </div>
+      <div class="item-more">${spec}${contract ? contractHTML(key) : ""}</div>`;
+    document.getElementById(into).appendChild(el);
+
+    const use = el.querySelector(`[name=use_${key}]`);
+    use.addEventListener("change", () => { el.classList.toggle("on", use.checked); updateSum(); });
+    if (fee) wireFee(el, el.querySelector("[data-fee]"), has => {
+      if (has && !use.checked) { use.checked = true; el.classList.add("on"); }
+    });
+    if (contract) wireContract(el, key);
+  });
+
+  // 주류: 금액 칸 쉼표, 1박스 합계, 영수증 미리보기
+  const won = v => Number(v.replace(/[^0-9]/g, "")) || 0;
+  document.querySelectorAll("[data-box], [data-won]").forEach(input => input.addEventListener("input", () => {
+    const n = won(input.value);
+    input.value = n ? n.toLocaleString("ko-KR") : "";
+    const total = [...document.querySelectorAll("[data-box]")].reduce((t, i) => t + won(i.value), 0);
+    document.getElementById("boxTotal").textContent = total.toLocaleString("ko-KR") + "원";
+  }));
+  const receipt = document.getElementById("liquor_receipt");
+  const thumbs = document.getElementById("receiptThumbs");
+  receipt.addEventListener("change", () => {
+    thumbs.innerHTML = "";
+    [...receipt.files].forEach(file => {
+      const li = document.createElement("li");
+      const img = document.createElement("img");
+      img.src = URL.createObjectURL(file);
+      img.alt = file.name;
+      li.append(img);
+      thumbs.append(li);
+    });
+    if (receipt.files.length) {
+      const note = document.createElement("li");
+      note.className = "thumbs-note";
+      note.textContent = `${receipt.files.length}장 선택됨`;
+      thumbs.append(note);
+    }
+  });
+
+  // POS 사양을 모르면 사진 안내
+  const posUnknown = document.querySelector('[name=spec_pos][value="잘 모르겠음"]');
+  posUnknown.addEventListener("change", () => {
+    document.querySelector(".photo-tip").hidden = !posUnknown.checked;
+  });
+
+  // 추가할 수 있는 행: 렌탈 제품, 기타 고정비
+  let rowSeq = 0;
+  const RENTAL_TYPES = ["정수기", "공기청정기", "서빙로봇", "커피머신", "제빙기", "직접 입력"];
+  function addRow(container, kind) {
+    const id = `${kind}${++rowSeq}`;
+    const el = document.createElement("div");
+    el.className = "item row";
+    const nameField = kind === "rental"
+      ? `<select name="type_${id}" aria-label="렌탈 제품">
+           <option value="">제품 선택</option>${RENTAL_TYPES.map(t => `<option>${t}</option>`).join("")}
+         </select>
+         <input type="text" name="name_${id}" class="custom" aria-label="렌탈 제품 이름" placeholder="제품 이름" hidden>`
+      : `<input type="text" name="name_${id}" aria-label="기타 비용 항목" placeholder="항목 (예: 보안 서비스)">`;
+    el.innerHTML = `
+      <div class="item-main">
+        <div class="row-name">${nameField}</div>
+        ${feeHTML(`fee_${id}`, kind === "rental" ? "렌탈 제품" : "기타 비용")}
+        <button type="button" class="remove" aria-label="이 줄 삭제">삭제</button>
+      </div>
+      <div class="item-more">${contractHTML(id)}</div>`;
+    container.appendChild(el);
+
+    const named = el.querySelector(".row-name select, .row-name input:not(.custom)");
+    const fee = el.querySelector("[data-fee]");
+    const refresh = () => el.classList.toggle("on", !!named.value.trim() || !!fee.value);
+    named.addEventListener(named.tagName === "SELECT" ? "change" : "input", () => {
+      if (kind === "rental") {
+        const custom = el.querySelector(".custom");
+        custom.hidden = named.value !== "직접 입력";
+        if (!custom.hidden) custom.focus();
+      }
+      refresh(); updateSum();
+    });
+    wireFee(el, fee, refresh);
+    wireContract(el, id);
+    el.querySelector(".remove").addEventListener("click", () => {
+      const next = el.nextElementSibling || el.previousElementSibling;
+      el.remove();
+      if (!container.children.length) addRow(container, kind);
+      updateSum();
+      (next ? next.querySelector("select, input") : container.parentElement.querySelector(".add")).focus();
+    });
+    return el;
+  }
+  const rentalRows = document.getElementById("rentalRows");
+  const otherRows = document.getElementById("otherRows");
+  addRow(rentalRows, "rental");
+  addRow(otherRows, "other");
+  document.getElementById("addRental").addEventListener("click", () => addRow(rentalRows, "rental").querySelector("select").focus());
+  document.getElementById("addOther").addEventListener("click", () => addRow(otherRows, "other").querySelector("input").focus());
+
+  const sumEl = document.getElementById("sum");
+  function updateSum() {
+    let total = 0;
+    document.querySelectorAll(".item.on [data-fee]").forEach(f => {
+      total += Number(f.value.replace(/[^0-9]/g, "")) || 0;
+    });
+    sumEl.textContent = total.toLocaleString("ko-KR") + "원";
+  }
+
+  // ── 정책자금 신청 가능 여부 체크 ──
+  const FUND_QS = {
+    fundBasic: [
+      { key: "reg", q: "사업자등록을 하셨나요?", opts: ["개인사업자", "법인사업자", "개업 준비 중"] },
+      { key: "age", q: "개업한 지 얼마나 됐나요?", opts: ["1년 미만", "1~3년", "3~7년", "7년 이상"], hideIf: v => v.reg === "개업 준비 중" },
+      { key: "biz", q: "업종", opts: ["음식점·카페", "도소매", "서비스업", "제조업", "건설·운수업", "유흥주점·사행업", "금융·보험·부동산업", "그 밖의 업종"] },
+      { key: "emp", q: "대표님을 뺀 상시 직원 수", opts: ["없음", "1~4명", "5~9명", "10명 이상"] },
+      { key: "sales", q: "최근 1년 매출", opts: ["아직 없음", "1억 미만", "1억~3억", "3억~10억", "10억 이상"] },
+      { key: "region", q: "사업장 지역", opts: ["서울", "경기", "인천", "그 밖의 지역"] },
+      { key: "ceo", q: "대표자 나이", opts: ["만 39세 이하", "만 40세 이상"] },
+    ],
+    fundCond: [
+      { key: "credit", q: "대표자 신용점수 (NICE 기준)", opts: ["839점 이하", "840~919점", "920점 이상", "잘 모르겠음"] },
+      { key: "tax", q: "국세·지방세 체납이 있나요?", opts: ["없음", "있음", "잘 모르겠음"] },
+      { key: "late", q: "금융기관 대출 연체가 있나요?", opts: ["없음", "있음"] },
+      { key: "using", q: "지금 이용 중인 정책자금이 있나요?", opts: ["없음", "있음"] },
+      { key: "highrate", q: "2025년 6월 30일 이전에 받은 연 7% 이상 사업자 대출이 있나요?", opts: ["없음", "있음", "잘 모르겠음"] },
+      { key: "youth", q: "최근 1년 안에 만 39세 이하 직원을 뽑았거나, 직원 절반 이상이 청년인가요?", opts: ["예", "아니오"] },
+      { key: "drop", q: "최근 매출이 전년보다 15% 이상 줄었나요?", opts: ["예", "아니오", "잘 모르겠음"] },
+      { key: "disaster", q: "최근 화재·수해 같은 재난 피해가 있었나요?", opts: ["없음", "있음"] },
+      { key: "growth", q: "해당하는 것이 있나요? (모두)", opts: ["스마트기술 도입 (키오스크·서빙로봇·테이블오더 등)", "2년 연속 매출 10% 이상 성장", "백년가게·정부 지원사업 선정", "수출 실적"], multi: true },
+      { key: "use", q: "자금이 필요한 곳 (해당하는 것 모두)", opts: ["운영자금 (재료비·인건비 등)", "시설·장비", "고금리 대출 갈아타기", "창업 준비"], multi: true },
+    ],
+  };
+
+  Object.entries(FUND_QS).forEach(([boxId, qs]) => {
+    document.getElementById(boxId).innerHTML = qs.map(({ key, q, opts, multi }) => `
+      <div class="fq" data-q="${key}">
+        <p class="q" id="fq_${key}">${q}</p>
+        <div class="chips" ${multi ? "" : 'role="radiogroup"'} aria-labelledby="fq_${key}">${chips(multi ? "checkbox" : "radio", `fund_${key}`, opts)}</div>
+      </div>`).join("");
+  });
+
+  const fundForm = document.getElementById("fundForm");
+  const fundVals = () => {
+    const v = {};
+    Object.values(FUND_QS).flat().forEach(({ key, multi }) => {
+      const picked = [...fundForm.querySelectorAll(`[name="fund_${key}"]:checked`)].map(i => i.value);
+      v[key] = multi ? picked : picked[0] || "";
+    });
+    return v;
+  };
+  function syncFundQs() {
+    const v = fundVals();
+    Object.values(FUND_QS).flat().forEach(({ key, hideIf }) => {
+      if (hideIf) fundForm.querySelector(`[data-q="${key}"]`).hidden = hideIf(v);
+    });
+  }
+
+  const OFFICIAL = {
+    semas: { label: "소상공인 정책자금 누리집", url: "https://ols.semas.or.kr" },
+    seoul: { label: "서울신용보증재단", url: "https://www.seoulshinbo.co.kr" },
+    gyeonggi: { label: "경기신용보증재단", url: "https://www.gcgf.or.kr" },
+    incheon: { label: "인천신용보증재단", url: "https://www.icsinbo.or.kr" },
+    kosmes: { label: "중소벤처기업진흥공단", url: "https://www.kosmes.or.kr" },
+  };
+
+  // 2026년 공고 기준 (중소벤처기업부 소상공인 정책자금 융자사업 공고 변경 차수, 중진공 2026 융자계획)
+  function assessFunds(v) {
+    const blocks = [];
+    if (v.biz === "유흥주점·사행업" || v.biz === "금융·보험·부동산업")
+      blocks.push("유흥·향락, 사행, 금융·보험·부동산업 등은 정책자금 지원 제외 업종입니다. 사업자등록증의 업종 코드로 정확히 확인해 드립니다.");
+    if (v.tax === "있음") blocks.push("국세·지방세 체납이 있으면 정책자금 신청이 제한됩니다. 먼저 체납을 정리할 방법부터 상담해 드립니다.");
+    if (v.late === "있음") blocks.push("금융기관 대출 연체가 있으면 정책자금 신청이 제한됩니다. 연체 해소 후 신청 시점을 함께 잡아 드립니다.");
+
+    const preparing = v.reg === "개업 준비 중";
+    const small = v.emp === "없음" || v.emp === "1~4명" || (v.emp === "5~9명" && ["제조업", "건설·운수업"].includes(v.biz));
+    const under3 = v.age === "1년 미만" || v.age === "1~3년";
+    const under7 = under3 || v.age === "3~7년";
+    const young = v.ceo === "만 39세 이하";
+    const uses = v.use;
+    const common = [];
+    if (v.tax === "잘 모르겠음") common.push("국세·지방세 체납 여부 (홈택스·위택스에서 확인)");
+    if (v.credit === "잘 모르겠음") common.push("대표자 신용점수 (NICE)");
+    if (v.using === "있음") common.push("이용 중인 정책자금과 중복 지원 제한 여부");
+    if (v.sales === "10억 이상") common.push("업종별 소상공인 매출 기준 초과 여부");
+    if (preparing) common.push("사업자등록 후 신청 가능 (개업 일정에 맞춰 준비)");
+    const timing = "올해 접수 일정과 예산 소진 여부";
+
+    const funds = [];
+    const add = (name, org, link, level, met, check) => funds.push({ name, org, link, level, met, check: [...check, ...common] });
+    const regMet = preparing ? [] : ["사업자등록 완료"];
+    const smallMet = "소상공인 규모 (상시 직원 5인 미만, 제조·건설·운수업 10인 미만)";
+
+    if (small) {
+      add("일반경영안정자금", "소상공인시장진흥공단", OFFICIAL.semas,
+        preparing ? "낮음" : "높음",
+        [...regMet, smallMet, "업력 제한 없음", ...(uses.some(u => u.startsWith("운영")) ? ["운영자금 용도"] : [])],
+        [timing]);
+
+      if (v.credit === "839점 이하" || v.credit === "잘 모르겠음")
+        add("신용취약소상공인자금", "소상공인시장진흥공단 (직접대출)", OFFICIAL.semas,
+          preparing ? "낮음" : v.credit === "839점 이하" ? "높음" : "보통",
+          [smallMet, ...(v.credit === "839점 이하" ? ["대표자 신용점수 NICE 839점 이하"] : [])],
+          ["소상공인 지식배움터 신용관리 교육 이수", timing]);
+
+      if (young || v.youth === "예") {
+        const ceoType = young && under3 && !preparing;
+        add("청년고용연계자금", "소상공인시장진흥공단", OFFICIAL.semas,
+          preparing ? "낮음" : (ceoType || v.youth === "예") ? "높음" : "보통",
+          [smallMet,
+           ...(ceoType ? ["대표자 만 39세 이하, 업력 3년 미만"] : []),
+           ...(v.youth === "예" ? ["최근 1년 청년 채용 또는 청년 직원 비율 요건"] : [])],
+          [...(young && !under3 && v.youth !== "예" ? ["업력 3년 이상이면 청년 직원 고용 요건으로 신청"] : []), "청년 고용 유지 등 세부 요건", timing]);
+      }
+
+      if (v.growth.length)
+        add("혁신성장촉진자금", "소상공인시장진흥공단", OFFICIAL.semas,
+          preparing ? "낮음" : uses.includes("시설·장비") ? "높음" : "보통",
+          [smallMet, ...v.growth.map(g => g.replace(/ \(.*\)$/, "")), ...(uses.includes("시설·장비") ? ["시설·장비 투자 용도"] : [])],
+          ["일반형·혁신형 중 해당 유형과 증빙 서류", timing]);
+
+      if (v.highrate === "있음" || uses.includes("고금리 대출 갈아타기")) {
+        const creditOk = v.credit === "839점 이하" || v.credit === "840~919점";
+        add("소상공인 대환대출", "소상공인시장진흥공단", OFFICIAL.semas,
+          v.credit === "920점 이상" ? "낮음" : v.highrate === "있음" && creditOk ? "높음" : "보통",
+          [...(v.highrate === "있음" ? ["2025년 6월 30일 이전 연 7% 이상 사업자 대출"] : []), ...(creditOk ? ["대표자 신용점수 NICE 919점 이하"] : []), smallMet],
+          [...(v.credit === "920점 이상" ? ["신용점수 기준 (NICE 919점 이하) 초과"] : []), "기존 대출의 정상 상환 이력", timing]);
+      }
+
+      if (v.disaster === "있음" || v.drop === "예" || v.drop === "잘 모르겠음")
+        add("긴급경영안정자금 (" + (v.disaster === "있음" ? "재해 피해" : "일시적 경영애로") + ")", "소상공인시장진흥공단", OFFICIAL.semas,
+          preparing ? "낮음" : (v.disaster === "있음" || v.drop === "예") ? "높음" : "보통",
+          [smallMet, ...(v.disaster === "있음" ? ["재난 피해 있음"] : []), ...(v.drop === "예" ? ["전년 대비 매출 15% 이상 감소"] : [])],
+          [...(v.disaster === "있음" ? ["지자체 재해 피해 확인서 발급"] : []), ...(v.drop !== "예" && v.disaster !== "있음" ? ["매출 감소율 증빙 (부가세 신고 자료 등)"] : []), timing]);
+    } else if (v.emp) {
+      add("중소기업 정책자금 (" + (under7 || preparing ? "창업기반지원자금" : "신시장진출·신성장기반자금 등") + ")", "중소벤처기업진흥공단", OFFICIAL.kosmes, "보통",
+        [...regMet, "상시 직원 기준 중소기업 규모", ...(under7 ? ["업력 7년 미만"] : []), ...(preparing ? ["예비창업자 포함"] : [])],
+        ["사업계획과 기술성 평가", "올해 공고의 업종 제한", timing]);
+    }
+    if (young && (under3 || preparing) && (!small || ["제조업"].includes(v.biz)))
+      add("청년전용창업자금", "중소벤처기업진흥공단", OFFICIAL.kosmes, "보통",
+        ["대표자 만 39세 이하", preparing ? "창업 예정자" : "업력 3년 미만"],
+        ["창업 교육·사업계획서 평가", "올해 공고의 업종 제한", timing]);
+
+    const LOCAL = {
+      서울: ["서울시 중소기업육성자금", "서울신용보증재단", OFFICIAL.seoul, ["서울시 자금 종류(일반·긴급자영업자금 등)별 조건"]],
+      경기: ["시·군 소상공인 특례보증", "경기신용보증재단", OFFICIAL.gyeonggi, ["사업장 소재 시·군의 공고 (영업 기간 2~3개월 이상 등 조건이 시·군마다 다름)"]],
+      인천: ["희망인천 소상공인 경영안정자금", "인천신용보증재단", OFFICIAL.incheon, ["현재 접수 중인 단계와 신청 기간"]],
+    }[v.region];
+    if (v.region)
+      add(LOCAL ? LOCAL[0] : "지자체 소상공인 경영안정자금", LOCAL ? LOCAL[1] : "사업장 지역 신용보증재단", LOCAL ? LOCAL[2] : null,
+        preparing ? "낮음" : small ? "보통" : "낮음",
+        [...regMet, `사업장 지역: ${v.region}`],
+        [...(LOCAL ? LOCAL[3] : ["사업장이 있는 시·도 신용보증재단 공고"]), "보증 심사 (신용·매출)", "예산 소진 여부"]);
+
+    if (blocks.length) funds.forEach(f => { f.level = "낮음"; });
+    const order = { 높음: 0, 보통: 1, 낮음: 2 };
+    funds.sort((a, b) => order[a.level] - order[b.level]);
+    return { blocks, funds };
+  }
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  function renderFunds() {
+    const v = fundVals();
+    const { blocks, funds } = assessFunds(v);
+    const today = new Date().toLocaleDateString("ko-KR", { year: "numeric", month: "long", day: "numeric" });
+    document.getElementById("fundNotice").textContent =
+      `이 결과는 대표님이 입력하신 정보와 2026년 공고 내용을 바탕으로 ${today}에 정리한 참고 자료입니다. 정책자금의 심사와 승인은 각 운영기관이 결정하며, 이 결과가 승인을 보장하거나 예측하지 않습니다.`;
+    document.getElementById("fundSummary").innerHTML =
+      `<b>입력 정보</b> ${esc([v.reg, v.reg === "개업 준비 중" ? "" : v.age && `업력 ${v.age}`, v.biz, v.emp && `직원 ${v.emp}`, v.sales && `매출 ${v.sales}`, v.region].filter(Boolean).join(", "))}`;
+    const block = document.getElementById("fundBlock");
+    block.hidden = !blocks.length;
+    block.innerHTML = blocks.map(b => `<p>${esc(b)}</p>`).join("");
+    document.getElementById("fundList").innerHTML = funds.length ? funds.map(f => `
+      <li class="fund">
+        <div class="fund-head">
+          <div><h3>${esc(f.name)}</h3><p class="fund-org">${esc(f.org)}</p></div>
+          <span class="fit fit--${{ 높음: "high", 보통: "mid", 낮음: "low" }[f.level]}">요건 부합도 ${f.level}</span>
+        </div>
+        ${f.met.length ? `<p class="fund-k">충족한 요건</p><ul>${f.met.map(m => `<li>${esc(m)}</li>`).join("")}</ul>` : ""}
+        ${f.check.length ? `<p class="fund-k">확인이 필요한 사항</p><ul>${f.check.map(m => `<li>${esc(m)}</li>`).join("")}</ul>` : ""}
+        ${f.link ? `<a class="fund-link" href="${f.link.url}" target="_blank" rel="noopener">${esc(f.link.label)}에서 공고 보기</a>` : ""}
+      </li>`).join("") : `<li class="fund fund-empty">입력하신 조건으로는 바로 연결되는 자금이 보이지 않습니다. 상담에서 다른 지원사업까지 함께 찾아 드립니다.</li>`;
+  }
+
+  fundForm.addEventListener("change", e => {
+    syncFundQs();
+    if (!document.getElementById("fundResult").hidden && e.target.name?.startsWith("fund_")) renderFunds();
+  });
+  document.getElementById("fundRun").addEventListener("click", () => {
+    const v = fundVals();
+    const missing = [["reg", "사업자등록"], ["biz", "업종"], ["emp", "상시 직원 수"], ["region", "사업장 지역"]].filter(([k]) => !v[k]).map(([, n]) => n);
+    const err = document.getElementById("fundError");
+    if (missing.length) { err.textContent = `다음 항목을 골라 주세요: ${missing.join(", ")}`; return; }
+    err.textContent = "";
+    renderFunds();
+    const result = document.getElementById("fundResult");
+    result.hidden = false;
+    document.getElementById("fundRun").textContent = "결과 다시 보기";
+    result.focus();
+  });
+
+  fundForm.addEventListener("submit", e => {
+    e.preventDefault();
+    const err = document.getElementById("fundFormError");
+    const name = fundForm.elements.name.value.trim();
+    const tel = fundForm.elements.tel.value.replace(/[^0-9]/g, "");
+    if (!name) { err.textContent = "성함을 적어 주세요."; fundForm.elements.name.focus(); return; }
+    if (tel.length < 9) { err.textContent = "연락받으실 번호를 숫자로 적어 주세요. 예: 010-1234-5678"; fundForm.elements.tel.focus(); return; }
+    if (!document.getElementById("g-consent").checked) { err.textContent = "개인정보 수집·이용에 동의해 주셔야 접수할 수 있습니다."; document.getElementById("g-consent").focus(); return; }
+    err.textContent = "";
+    // TODO: 아임웹 폼 또는 접수 주소로 전송 (입력 조건 + 확인해 볼 자금 목록 포함)
+    fundForm.classList.add("sent");
+    document.getElementById("fundDone").focus();
+  });
+
+  document.querySelectorAll("[data-alert]").forEach(a => a.addEventListener("click", () => {
+    document.getElementById("alertOpt").checked = true;
+  }));
+
+  const form = document.getElementById("checkForm");
+  const err = document.getElementById("formError");
+  form.addEventListener("submit", e => {
+    e.preventDefault();
+    const name = form.elements.name.value.trim();
+    const tel = form.elements.tel.value.replace(/[^0-9]/g, "");
+    if (!name) { err.textContent = "성함을 적어 주세요."; form.elements.name.focus(); return; }
+    if (tel.length < 9) { err.textContent = "연락받으실 번호를 숫자로 적어 주세요. 예: 010-1234-5678"; form.elements.tel.focus(); return; }
+    if (!document.getElementById("f-consent").checked) { err.textContent = "개인정보 수집·이용에 동의해 주셔야 접수할 수 있습니다."; document.getElementById("f-consent").focus(); return; }
+    err.textContent = "";
+    // TODO: 아임웹 폼 또는 접수 주소로 전송 (new FormData(form))
+    document.getElementById("donePos").hidden = !posUnknown.checked;
+    form.classList.add("sent");
+    document.getElementById("done").focus();
+  });
+</script>
+</body>
+</html>
