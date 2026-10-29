@@ -42,6 +42,7 @@
   }
 
   * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
   html { scroll-behavior: smooth; }
   body {
     margin: 0;
@@ -341,6 +342,33 @@
     form.sent .stamp { animation: none; }
   }
 
+  /* Policy fund check */
+  .qs { display: grid; gap: 14px; margin-top: 10px; }
+  .fq[hidden] { display: none; }
+  .fq .q { margin-bottom: 6px; }
+  .fund-result { margin-top: 28px; padding-top: 24px; border-top: 2px solid var(--ink); }
+  .fund-result:focus { outline: none; }
+  .fund-notice { font-size: 14px; color: var(--muted); padding: 12px 14px; background: var(--band); border-radius: 4px; }
+  .fund-summary { margin-top: 12px; font-size: 15px; }
+  .fund-summary b { margin-right: 8px; }
+  .fund-block { margin-top: 12px; padding: 12px 14px; border: 2px solid var(--seal); border-radius: 4px; font-size: 15px; display: grid; gap: 6px; }
+  .fund-list { list-style: none; margin: 16px 0 0; padding: 0; border-top: 1px solid var(--rule); }
+  .fund { padding: 18px 0; border-bottom: 1px dashed var(--rule); }
+  .fund-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap; }
+  .fund h3 { font-size: 22px; }
+  .fund-org { font-size: 14px; color: var(--muted); }
+  .fit { flex: none; font-size: 14px; font-weight: 700; padding: 4px 12px; border-radius: 999px; border: 1.5px solid var(--ink); }
+  .fit--high { background: var(--ink); color: var(--sheet); }
+  .fit--mid { background: var(--sheet); color: var(--ink); }
+  .fit--low { border-color: var(--rule); color: var(--muted); }
+  .fund-k { font-size: 14px; font-weight: 600; margin-top: 10px; }
+  .fund ul { margin: 4px 0 0; padding-left: 1.1em; font-size: 15px; color: var(--muted); }
+  .fund-link { display: inline-block; margin-top: 10px; font-size: 15px; font-weight: 600; text-underline-offset: 3px; }
+  .fund-empty { color: var(--muted); }
+  .fund-legend { list-style: none; margin: 14px 0 0; padding: 0; font-size: 13px; color: var(--muted); display: grid; gap: 2px; }
+  .fund-legend b { color: var(--ink); margin-right: 6px; }
+  .fund-result + .error, .fund-result .submit { margin-top: 8px; }
+
   /* Footer */
   footer { background: var(--ink); color: #B8C6CB; padding: 48px 0 120px; font-size: 14px; line-height: 1.8; }
   @media (min-width: 900px) { footer { padding-bottom: 48px; } }
@@ -369,7 +397,8 @@
       <a href="#opening">개업 준비</a>
       <a href="#process">진행 과정</a>
       <a href="#faq">자주 묻는 질문</a>
-      <a href="#check">무료 점검</a>
+      <a href="#check">고정비 체크</a>
+      <a href="#fund">정책자금 체크</a>
     </nav>
     <a class="top-call" href="tel:0220390853">02-2039-0853</a>
   </div>
@@ -394,7 +423,8 @@
           무료로 확인받기
         </a>
         <a class="btn" href="tel:0220390853">전화 상담</a>
-        <a class="btn btn--ink" href="#check">내 매장 고정비 체크</a>
+        <a class="btn btn--ink" href="#check">고정비 체크</a>
+        <a class="btn btn--ink" href="#fund">정책자금 체크</a>
       </div>
     </div>
 
@@ -488,6 +518,7 @@
           <li>매달 새로 열리는 소상공인 지원사업 소식 발송</li>
         </ul>
         <p class="fine">신청은 사장님 명의로 직접 하시며, 선정과 지급 여부는 각 기관의 심사로 결정됩니다.</p>
+        <p class="fine"><a href="#fund">정책자금 신청 가능 여부 체크하기</a></p>
       </div>
     </div>
 
@@ -704,6 +735,71 @@
             <a class="btn btn--kakao todo" href="#" data-kakao>POS 사진 보내기</a>
           </div>
         </div>
+      </div>
+    </form>
+  </div>
+</section>
+
+<!-- 8-2. 정책자금 신청 가능 여부 체크 -->
+<section id="fund" aria-labelledby="fund-title">
+  <div class="wrap check">
+    <div class="check-aside">
+      <h2 id="fund-title">정책자금 신청 가능 여부 체크</h2>
+      <p class="lede">사업장 정보와 조건을 고르면, 입력하신 내용 기준으로 확인해 볼 만한 자금과 요건 부합도를 바로 보여드립니다.</p>
+      <div class="alt">
+        <p>신용점수는 조회하지 않습니다. 알고 계신 범위에서 골라 주세요.</p>
+        <p>결과는 공고 요건과 비교한 참고 자료입니다. 심사와 승인은 각 운영기관이 결정하며, 신청과 접수는 대표님이 직접 하십니다.</p>
+      </div>
+    </div>
+
+    <form class="slip" id="fundForm" novalidate>
+      <div class="stamp" aria-hidden="true">접수</div>
+
+      <div class="form-body">
+        <div class="slip-head">
+          <span class="slip-title">정책자금 사전 체크</span>
+          <span class="slip-meta">해당하는 것을 골라 주세요</span>
+        </div>
+
+        <p class="group-title">기본 정보</p>
+        <div class="qs" id="fundBasic"></div>
+
+        <p class="group-title">신청 조건</p>
+        <div class="qs" id="fundCond"></div>
+
+        <p class="error" id="fundError" role="alert"></p>
+        <button class="btn btn--ink submit" type="button" id="fundRun">확인해 볼 자금 보기</button>
+
+        <div class="fund-result" id="fundResult" hidden tabindex="-1">
+          <p class="fund-notice" id="fundNotice"></p>
+          <div class="fund-summary" id="fundSummary"></div>
+          <div class="fund-block" id="fundBlock" hidden></div>
+          <ul class="fund-list" id="fundList"></ul>
+          <ul class="fund-legend">
+            <li><b>높음</b> 입력하신 정보 기준으로 주요 요건을 충족합니다.</li>
+            <li><b>보통</b> 주요 요건은 충족하나 확인이 필요한 사항이 있습니다.</li>
+            <li><b>낮음</b> 일부 요건이 충족되지 않거나 확인되지 않았습니다.</li>
+            <li>요건 부합도는 공고 요건과의 비교 결과이며, 심사 통과 가능성을 뜻하지 않습니다. 자금 이름과 요건은 해마다 공고에 따라 바뀔 수 있습니다.</li>
+          </ul>
+
+          <p class="group-title">이 결과로 상담 받기</p>
+          <p class="group-hint">올해 공고 기준으로 요건을 다시 확인하고, 필요한 서류와 준비 방법을 안내해 드립니다.</p>
+          <div class="fields">
+            <div class="field"><label for="g-name">성함 <span class="req">*</span></label><input id="g-name" name="name" type="text" autocomplete="name" required></div>
+            <div class="field"><label for="g-tel">연락처 <span class="req">*</span></label><input id="g-tel" name="tel" type="tel" inputmode="tel" autocomplete="tel" placeholder="010-1234-5678" required></div>
+            <div class="field full"><label for="g-memo">더 알려주실 내용</label><textarea id="g-memo" name="memo" rows="3" placeholder="예: 필요한 금액과 시기, 이미 알아본 자금"></textarea></div>
+          </div>
+          <label class="consent"><input type="checkbox" id="g-consent" required>
+            <span>상담을 위한 개인정보 수집·이용에 동의합니다. (성함, 연락처, 입력하신 사업장 정보 / 상담 목적 / 상담 종료 후 <span class="todo">○년</span> 보관) <a href="#privacy">자세히 보기</a></span>
+          </label>
+          <p class="error" id="fundFormError" role="alert"></p>
+          <button class="btn btn--ink submit" type="submit">정책자금 상담 신청</button>
+        </div>
+      </div>
+
+      <div class="done" tabindex="-1" id="fundDone">
+        <h3>접수됐습니다</h3>
+        <p>입력하신 조건과 확인해 볼 자금 목록을 함께 받았습니다. 올해 공고 기준으로 다시 확인한 뒤 남겨주신 번호로 연락드립니다.</p>
       </div>
     </form>
   </div>
@@ -949,6 +1045,181 @@
     });
     sumEl.textContent = total.toLocaleString("ko-KR") + "원";
   }
+
+  // ── 정책자금 신청 가능 여부 체크 ──
+  const FUND_QS = {
+    fundBasic: [
+      { key: "reg", q: "사업자등록을 하셨나요?", opts: ["개인사업자", "법인사업자", "개업 준비 중"] },
+      { key: "age", q: "개업한 지 얼마나 됐나요?", opts: ["1년 미만", "1~3년", "3~7년", "7년 이상"], hideIf: v => v.reg === "개업 준비 중" },
+      { key: "biz", q: "업종", opts: ["음식점·카페", "도소매", "서비스업", "제조업", "건설·운수업", "유흥주점·사행업", "그 밖의 업종"] },
+      { key: "emp", q: "대표님을 뺀 상시 직원 수", opts: ["없음", "1~4명", "5~9명", "10명 이상"] },
+      { key: "sales", q: "최근 1년 매출", opts: ["아직 없음", "1억 미만", "1억~3억", "3억~10억", "10억 이상"] },
+      { key: "region", q: "사업장 지역", opts: ["서울", "경기", "인천", "그 밖의 지역"] },
+      { key: "ceo", q: "대표자 나이", opts: ["만 39세 이하", "만 40세 이상"] },
+    ],
+    fundCond: [
+      { key: "credit", q: "대표자 신용점수 (NICE 기준)", opts: ["744점 이하", "745~839점", "840점 이상", "잘 모르겠음"] },
+      { key: "tax", q: "국세·지방세 체납이 있나요?", opts: ["없음", "있음", "잘 모르겠음"] },
+      { key: "late", q: "금융기관 대출 연체가 있나요?", opts: ["없음", "있음"] },
+      { key: "using", q: "지금 이용 중인 정책자금이 있나요?", opts: ["없음", "있음"] },
+      { key: "highrate", q: "연 7% 이상 금리의 사업자 대출을 쓰고 계신가요?", opts: ["없음", "있음", "잘 모르겠음"] },
+      { key: "disaster", q: "최근 화재·수해 같은 재난 피해가 있었나요?", opts: ["없음", "있음"] },
+      { key: "use", q: "자금이 필요한 곳 (해당하는 것 모두)", opts: ["운영자금 (재료비·인건비 등)", "시설·장비", "고금리 대출 갈아타기", "창업 준비"], multi: true },
+    ],
+  };
+
+  Object.entries(FUND_QS).forEach(([boxId, qs]) => {
+    document.getElementById(boxId).innerHTML = qs.map(({ key, q, opts, multi }) => `
+      <div class="fq" data-q="${key}">
+        <p class="q" id="fq_${key}">${q}</p>
+        <div class="chips" ${multi ? "" : 'role="radiogroup"'} aria-labelledby="fq_${key}">${chips(multi ? "checkbox" : "radio", `fund_${key}`, opts)}</div>
+      </div>`).join("");
+  });
+
+  const fundForm = document.getElementById("fundForm");
+  const fundVals = () => {
+    const v = {};
+    Object.values(FUND_QS).flat().forEach(({ key, multi }) => {
+      const picked = [...fundForm.querySelectorAll(`[name="fund_${key}"]:checked`)].map(i => i.value);
+      v[key] = multi ? picked : picked[0] || "";
+    });
+    return v;
+  };
+  function syncFundQs() {
+    const v = fundVals();
+    Object.values(FUND_QS).flat().forEach(({ key, hideIf }) => {
+      if (hideIf) fundForm.querySelector(`[data-q="${key}"]`).hidden = hideIf(v);
+    });
+  }
+
+  const OFFICIAL = {
+    semas: { label: "소상공인 정책자금 누리집", url: "https://ols.semas.or.kr" },
+    seoul: { label: "서울신용보증재단", url: "https://www.seoulshinbo.co.kr" },
+    gyeonggi: { label: "경기신용보증재단", url: "https://www.gcgf.or.kr" },
+    incheon: { label: "인천신용보증재단", url: "https://www.icsinbo.or.kr" },
+    kosmes: { label: "중소벤처기업진흥공단", url: "https://www.kosmes.or.kr" },
+  };
+
+  function assessFunds(v) {
+    const blocks = [];
+    if (v.biz === "유흥주점·사행업") blocks.push("유흥주점·사행업 등은 대부분의 정책자금에서 지원 대상 업종이 아닙니다.");
+    if (v.tax === "있음") blocks.push("국세·지방세 체납이 있으면 대부분의 정책자금 신청이 제한됩니다. 먼저 체납을 정리할 방법부터 상담해 드립니다.");
+    if (v.late === "있음") blocks.push("금융기관 대출 연체가 있으면 대부분의 정책자금 신청이 제한됩니다. 연체 해소 후 신청 시점을 함께 잡아 드립니다.");
+
+    const preparing = v.reg === "개업 준비 중";
+    const small = v.emp === "없음" || v.emp === "1~4명" || (v.emp === "5~9명" && ["제조업", "건설·운수업"].includes(v.biz));
+    const young = v.age === "1년 미만" || v.age === "1~3년" || v.age === "3~7년";
+    const uses = v.use;
+    const common = [];
+    if (v.tax === "잘 모르겠음") common.push("국세·지방세 체납 여부 (홈택스·위택스에서 확인)");
+    if (v.credit === "잘 모르겠음") common.push("대표자 신용점수");
+    if (v.using === "있음") common.push("이용 중인 정책자금과 중복 지원 제한 여부");
+    if (v.sales === "10억 이상") common.push("업종별 소상공인 매출 기준 초과 여부");
+    if (preparing) common.push("사업자등록 후 신청 가능 (개업 일정에 맞춰 준비)");
+
+    const funds = [];
+    const add = (name, org, link, level, met, check) => funds.push({ name, org, link, level, met, check: [...check, ...common] });
+    const regMet = preparing ? [] : ["사업자등록 완료"];
+
+    if (small) {
+      add("소상공인 일반경영안정자금", "소상공인시장진흥공단", OFFICIAL.semas,
+        preparing ? "보통" : uses.some(u => u.startsWith("운영")) ? "높음" : "보통",
+        [...regMet, "소상공인 규모 (상시 직원 기준)", ...(uses.some(u => u.startsWith("운영")) ? ["운영자금 용도"] : [])],
+        ["올해 공고의 업력·지원 대상 조건"]);
+      if (v.credit === "744점 이하" || v.credit === "잘 모르겠음")
+        add("신용취약소상공인자금", "소상공인시장진흥공단", OFFICIAL.semas,
+          v.credit === "744점 이하" ? "높음" : "보통",
+          ["소상공인 규모", ...(v.credit === "744점 이하" ? ["신용점수 기준 (NICE 744점 이하)"] : [])],
+          ["공고에서 정한 교육 이수 등 추가 조건"]);
+      if (v.ceo === "만 39세 이하")
+        add("청년 대상 자금 (청년고용연계자금 등)", "소상공인시장진흥공단", OFFICIAL.semas, "보통",
+          ["대표자 만 39세 이하", "소상공인 규모"],
+          ["청년 대표 또는 청년 직원 고용 요건", "올해 공고의 세부 대상"]);
+      if (uses.includes("시설·장비"))
+        add("성장기반자금 (혁신성장촉진자금 등)", "소상공인시장진흥공단", OFFICIAL.semas, preparing ? "낮음" : "보통",
+          ["시설·장비 투자 용도", "소상공인 규모"],
+          ["업력, 스마트기술 도입 여부 등 세부 요건"]);
+      if (v.highrate === "있음" || uses.includes("고금리 대출 갈아타기"))
+        add("소상공인 대환대출", "소상공인시장진흥공단", OFFICIAL.semas, v.highrate === "있음" ? "높음" : "보통",
+          [...(v.highrate === "있음" ? ["연 7% 이상 사업자 대출 이용 중"] : []), "소상공인 규모"],
+          ["기존 대출의 금리·잔액·대출 시기 조건", "올해 대환 프로그램 운영 여부"]);
+      if (v.disaster === "있음")
+        add("특별경영안정자금 (재해 피해)", "소상공인시장진흥공단", OFFICIAL.semas, "보통",
+          ["재난 피해 있음"], ["지자체 재해 피해 확인서 발급"]);
+    } else if (v.emp) {
+      add("중소기업 정책자금 (" + (young ? "창업기반지원자금 등" : "신성장기반자금 등") + ")", "중소벤처기업진흥공단", OFFICIAL.kosmes, "보통",
+        [...regMet, "상시 직원 기준 중소기업 규모", ...(young ? ["업력 7년 미만"] : [])],
+        ["사업계획과 기술성 평가", "올해 공고의 업종·지원 조건"]);
+    }
+
+    const local = { 서울: OFFICIAL.seoul, 경기: OFFICIAL.gyeonggi, 인천: OFFICIAL.incheon }[v.region];
+    if (v.region)
+      add(`${v.region === "그 밖의 지역" ? "지역" : v.region} 소상공인 경영안정자금 (신용보증재단 보증)`,
+        local ? local.label : "사업장 지역 신용보증재단", local || null,
+        preparing ? "낮음" : small ? "보통" : "낮음",
+        [...regMet, `사업장 지역: ${v.region}`],
+        ["지자체 자금 접수 시기와 예산 소진 여부", "보증 심사 (신용·매출)"]);
+
+    if (blocks.length) funds.forEach(f => { f.level = "낮음"; });
+    const order = { 높음: 0, 보통: 1, 낮음: 2 };
+    funds.sort((a, b) => order[a.level] - order[b.level]);
+    return { blocks, funds };
+  }
+
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  function renderFunds() {
+    const v = fundVals();
+    const { blocks, funds } = assessFunds(v);
+    const today = new Date().toLocaleDateString("ko-KR", { year: "numeric", month: "long", day: "numeric" });
+    document.getElementById("fundNotice").textContent =
+      `이 결과는 대표님이 입력하신 정보와 ${today} 기준으로 정리한 참고 자료입니다. 정책자금의 심사와 승인은 각 운영기관이 결정하며, 이 결과가 승인을 보장하거나 예측하지 않습니다.`;
+    document.getElementById("fundSummary").innerHTML =
+      `<b>입력 정보</b> ${esc([v.reg, v.reg === "개업 준비 중" ? "" : v.age && `업력 ${v.age}`, v.biz, v.emp && `직원 ${v.emp}`, v.sales && `매출 ${v.sales}`, v.region].filter(Boolean).join(", "))}`;
+    const block = document.getElementById("fundBlock");
+    block.hidden = !blocks.length;
+    block.innerHTML = blocks.map(b => `<p>${esc(b)}</p>`).join("");
+    document.getElementById("fundList").innerHTML = funds.length ? funds.map(f => `
+      <li class="fund">
+        <div class="fund-head">
+          <div><h3>${esc(f.name)}</h3><p class="fund-org">${esc(f.org)}</p></div>
+          <span class="fit fit--${{ 높음: "high", 보통: "mid", 낮음: "low" }[f.level]}">요건 부합도 ${f.level}</span>
+        </div>
+        ${f.met.length ? `<p class="fund-k">충족한 요건</p><ul>${f.met.map(m => `<li>${esc(m)}</li>`).join("")}</ul>` : ""}
+        ${f.check.length ? `<p class="fund-k">확인이 필요한 사항</p><ul>${f.check.map(m => `<li>${esc(m)}</li>`).join("")}</ul>` : ""}
+        ${f.link ? `<a class="fund-link" href="${f.link.url}" target="_blank" rel="noopener">${esc(f.link.label)}에서 공고 보기</a>` : ""}
+      </li>`).join("") : `<li class="fund fund-empty">입력하신 조건으로는 바로 연결되는 자금이 보이지 않습니다. 상담에서 다른 지원사업까지 함께 찾아 드립니다.</li>`;
+  }
+
+  fundForm.addEventListener("change", e => {
+    syncFundQs();
+    if (!document.getElementById("fundResult").hidden && e.target.name?.startsWith("fund_")) renderFunds();
+  });
+  document.getElementById("fundRun").addEventListener("click", () => {
+    const v = fundVals();
+    const missing = [["reg", "사업자등록"], ["biz", "업종"], ["emp", "상시 직원 수"], ["region", "사업장 지역"]].filter(([k]) => !v[k]).map(([, n]) => n);
+    const err = document.getElementById("fundError");
+    if (missing.length) { err.textContent = `다음 항목을 골라 주세요: ${missing.join(", ")}`; return; }
+    err.textContent = "";
+    renderFunds();
+    const result = document.getElementById("fundResult");
+    result.hidden = false;
+    document.getElementById("fundRun").textContent = "결과 다시 보기";
+    result.focus();
+  });
+
+  fundForm.addEventListener("submit", e => {
+    e.preventDefault();
+    const err = document.getElementById("fundFormError");
+    const name = fundForm.elements.name.value.trim();
+    const tel = fundForm.elements.tel.value.replace(/[^0-9]/g, "");
+    if (!name) { err.textContent = "성함을 적어 주세요."; fundForm.elements.name.focus(); return; }
+    if (tel.length < 9) { err.textContent = "연락받으실 번호를 숫자로 적어 주세요. 예: 010-1234-5678"; fundForm.elements.tel.focus(); return; }
+    if (!document.getElementById("g-consent").checked) { err.textContent = "개인정보 수집·이용에 동의해 주셔야 접수할 수 있습니다."; document.getElementById("g-consent").focus(); return; }
+    err.textContent = "";
+    // TODO: 아임웹 폼 또는 접수 주소로 전송 (입력 조건 + 확인해 볼 자금 목록 포함)
+    fundForm.classList.add("sent");
+    document.getElementById("fundDone").focus();
+  });
 
   document.querySelectorAll("[data-alert]").forEach(a => a.addEventListener("click", () => {
     document.getElementById("alertOpt").checked = true;
